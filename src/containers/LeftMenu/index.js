@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import 'material-components-web/dist/material-components-web.min.css';
 import {Drawer, DrawerSpacer, Navigation, Icon} from 'react-mdc-web/lib';
 
-class LeftMenu extends Component {
-  render() {
-    return (
+const LeftMenu = () => (
       <Drawer permanent>
         <DrawerSpacer>
           Menu
@@ -15,8 +13,6 @@ class LeftMenu extends Component {
           <a href='/home'><Icon name='directions_bike'/>Bike</a>
         </Navigation>
       </Drawer>
-    );
-  }
-}
+);
 
 export default LeftMenu;
