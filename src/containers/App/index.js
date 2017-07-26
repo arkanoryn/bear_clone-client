@@ -5,6 +5,7 @@ import Body from '../Body'
 import 'material-components-web/dist/material-components-web.min.css';
 import Layout from '../Layout'
 import Content from '../Content'
+import Editor from '../Editor'
 /* import { BrowserRouter, Miss } from 'react-router';*/
 
 class App extends Component {
@@ -17,7 +18,7 @@ class App extends Component {
             <NotesList />
 
             <Body>
-              Home
+              <Editor />
             </Body>
           </Content>
         </Layout>
