@@ -4,11 +4,8 @@ import 'material-components-web/dist/material-components-web.min.css';
 import {ListItem} from 'react-mdc-web/lib';
 
 const Note = ({ onClick, title, body }) => (
-  <ListItem
-    onClick={onClick}
-  >
+  <ListItem onClick={onClick}>
     {title}
-    {body}
   </ListItem>
 )
 

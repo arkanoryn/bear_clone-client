@@ -1,24 +1,38 @@
 import { combineReducers } from 'redux'
+import _ from 'lodash'
 
-const notes = (state = [], action) => {
+const initialState = {
+  notes: [],
+  note: {id: -1, title: "", body: ""}
+}
+
+let NoteApp = (state = initialState, action) => {
   switch (action.type) {
     case 'NEW_NOTE':
-      return [
-        ...state,
-        {
-          id: action.id,
-          title: action.title,
-          body: action.body
-        }
-      ]
-    case 'SELECT_NOTE':
-      return state.map(note => (note.id === action.id) ? {...note} : note )
+      return Object.assign({},
+                           state,
+                           { notes: [
+                             ...state.notes,
+                             {
+                               id: action.id,
+                               title: action.title,
+                               body: action.body
+                             }
+                           ]}
+      )
+
+    case 'TOGGLE_NOTE':
+      let noteId = _.findIndex(state.notes, (x) => { return x.id === action.id;})
+      return Object.assign({},
+                           state,
+                           {note: state.notes[noteId]}
+      )
 
     default:
       return state
   }
 }
 
-const NoteApp = combineReducers({notes})
+NoteApp = combineReducers({NoteApp})
 
 export default NoteApp

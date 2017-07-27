@@ -9,7 +9,14 @@ export const addNote = (title, body) => {
   }
 }
 
-export const toogleNote = (id) => {
+export const toggleNote = (id) => {
+  return {
+    type: 'TOGGLE_NOTE',
+    id
+  }
+}
+
+export const selectNote = (id) => {
   return {
     type: 'SELECT_NOTE',
     id

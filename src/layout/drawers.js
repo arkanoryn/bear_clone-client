@@ -1,11 +1,11 @@
 import React from 'react';
 import 'material-components-web/dist/material-components-web.min.css';
-import {Drawer, DrawerSpacer, Icon, List, ListItem, Navigation} from 'react-mdc-web/lib';
+import {Drawer, DrawerSpacer, Icon, List, Navigation} from 'react-mdc-web/lib';
 import PropTypes from 'prop-types'
 import Note from '../notes/note'
 import AddNote from '../notes/add_note'
 import { connect } from 'react-redux'
-import {toogleNote} from '../notes/actions'
+import {toggleNote} from '../notes/actions'
 
 const MainMenu = () => (
       <Drawer permanent>
@@ -27,8 +27,8 @@ const DisplayNotesMenu = ({ notes, onNoteClick }) => (
     </DrawerSpacer>
     <List>
       {notes.map((note, i) =>
-        <Note key={note.id} {...note} onClick={() => onNoteClick(note.id)} />
-      )
+          <Note key={note.id} {...note} onClick={() => onNoteClick(note.id)} />
+          )
       }
     </List>
   </Drawer>
@@ -46,13 +46,13 @@ DisplayNotesMenu.propTypes = {
 }
 
 const mapStateToProps = state => {
-  return {notes: state.notes}
+  return {notes: state.NoteApp.notes}
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onNoteClick: id => {
-      dispatch(toogleNote(id))
+      dispatch(toggleNote(id))
     }
   }
 }
@@ -68,5 +68,6 @@ const Drawers = () => (
     <NotesMenu />
   </div>
 );
+
 
 export default Drawers;

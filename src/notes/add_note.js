@@ -11,16 +11,22 @@ let AddNote = ({ dispatch }) => {
       <form
         onSubmit={e => {
             e.preventDefault()
-            if (!title.value.trim()) {
+            if (!title.value.trim() || !body.value.trim()) {
               return
             }
-            dispatch(addNote(title.value, ""))
+            dispatch(addNote(title.value, body.value))
             title.value = ''
+            body.value = ''
         }}
       >
         <input
           ref={node => {
               title = node
+          }}
+        />
+        <input
+          ref={node => {
+              body = node
           }}
         />
         <button type="submit">
