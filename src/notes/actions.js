@@ -16,9 +16,16 @@ export const toggleNote = (id) => {
   }
 }
 
-export const selectNote = (id) => {
+export const updateTitle = (title) => {
   return {
-    type: 'SELECT_NOTE',
-    id
+    type: 'UPDATE_TITLE',
+    title
+  }
+}
+
+export const updateBody = (body) => {
+  return {
+    type: 'UPDATE_BODY',
+    body
   }
 }

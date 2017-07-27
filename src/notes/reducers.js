@@ -7,6 +7,9 @@ const initialState = {
 }
 
 let NoteApp = (state = initialState, action) => {
+  let noteId = _.findIndex(state.notes, (x) => { return x.id === action.id;})
+  let id = state.note.id
+
   switch (action.type) {
     case 'NEW_NOTE':
       return Object.assign({},
@@ -22,10 +25,24 @@ let NoteApp = (state = initialState, action) => {
       )
 
     case 'TOGGLE_NOTE':
-      let noteId = _.findIndex(state.notes, (x) => { return x.id === action.id;})
       return Object.assign({},
                            state,
                            {note: state.notes[noteId]}
+      )
+    case 'UPDATE_TITLE':
+      return Object.assign({},
+                           state,
+                           { notes: state.notes.map(note => (note.id === id) ? {...note, title: action.title} : note),
+                             note: {...state.note, title: action.title}
+                           }
+      )
+
+    case 'UPDATE_BODY':
+      return Object.assign({},
+                           state,
+                           { notes: state.notes.map(note => (note.id === id) ? {...note, body: action.body} : note),
+                             note: {...state.note, body: action.body}
+                           }
       )
 
     default:
