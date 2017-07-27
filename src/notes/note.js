@@ -5,10 +5,10 @@ import {ListItem} from 'react-mdc-web/lib';
 
 const Note = ({ onClick, title, body }) => (
   <ListItem
-  onClick={onClick}
+    onClick={onClick}
   >
-  {title}
-  {body}
+    {title}
+    {body}
   </ListItem>
 )
 

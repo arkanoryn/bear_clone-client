@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux'
+
 const notes = (state = [], action) => {
   switch (action.type) {
     case 'NEW_NOTE':
@@ -17,4 +19,6 @@ const notes = (state = [], action) => {
   }
 }
 
-export default notes
+const NoteApp = combineReducers({notes})
+
+export default NoteApp

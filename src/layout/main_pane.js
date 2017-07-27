@@ -5,7 +5,7 @@ const propTypes = {
   children: PropTypes.node,
 };
 
-const Body = ({ children }) => (
+const MainPane = ({ children }) => (
   <div
   style={{
     'padding': '16px',
@@ -14,5 +14,6 @@ const Body = ({ children }) => (
     {children}
   </div>
 );
-Body.propTypes = propTypes;
-export default Body;
+
+MainPane.propTypes = propTypes;
+export default MainPane;

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Content} from 'react-mdc-web/lib'
 
 const propTypes = {
   children: PropTypes.node,
@@ -15,7 +16,15 @@ const Layout = ({ children }) => (
       minHeight: '100%',
     }}
   >
-    {children}
+    <Content
+      style={{
+        display: "flex",
+        boxSizing: "border-box",
+        flex: 1,
+      }}
+    >
+      {children}
+    </Content>
   </div>
 );
 Layout.propTypes = propTypes;
