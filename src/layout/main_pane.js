@@ -2,18 +2,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
-const MainPane = ({ children }) => (
+const MainPane = ({ children }) =>
   <div
-  style={{
-    'padding': '16px',
+    style={{
+      padding: '16px',
+      width: '50%'
     }}
   >
     {children}
-  </div>
-);
+  </div>;
 
 MainPane.propTypes = propTypes;
 export default MainPane;
