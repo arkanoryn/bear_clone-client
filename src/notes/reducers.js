@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import _ from 'lodash';
 
 const initialState = {
+  isFetching: false,
   notes: [],
   note: { id: -1, title: '', body: '' }
 };
@@ -43,6 +44,17 @@ let NoteApp = (state = initialState, action) => {
           note => (note.id === id ? { ...note, body: action.body } : note)
         ),
         note: { ...state.note, body: action.body }
+      });
+
+    case 'REQUEST_NOTES':
+      return Object.assign({}, state, {
+        isFetching: true
+      });
+
+    case 'RECEIVE_NOTES':
+      return Object.assign({}, state, {
+        isFetching: false,
+        notes: action.notes
       });
 
     default:
