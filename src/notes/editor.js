@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../index.css';
 import { connect } from 'react-redux';
-import { Display1, Cell, Grid, Textfield } from 'react-mdc-web/lib';
 import { updateTitle, updateBody } from './actions';
 
 const mapStateToProps = state => {
@@ -23,31 +23,12 @@ const mapDispachToProps = dispatch => {
 
 const DisplayEditor = ({ note, onUpdateTitle, onUpdateBody }) =>
   <div>
-    {note.id === -1
-      ? <em>No note</em>
-      : <Grid>
-          <Cell col={12}>
-            <Display1>
-              <Textfield
-                value={note.title}
-                onChange={({ target: { value: newTitle } }) =>
-                  onUpdateTitle(newTitle)}
-                floatingLabel="Title"
-                style={{ width: '100%' }}
-              />
-            </Display1>
-          </Cell>
-          <Cell col={12}>
-            <Textfield
-              value={note.body}
-              onChange={({ target: { value: newBody } }) =>
-                onUpdateBody(newBody)}
-              floatingLabel="Body"
-              multiline
-              rows="15"
-            />
-          </Cell>
-        </Grid>}
+    <h3>
+      {note.title}
+    </h3>
+    <p>
+      {note.body}
+    </p>
   </div>;
 
 DisplayEditor.propTypes = {
