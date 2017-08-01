@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../index.css';
 import { connect } from 'react-redux';
+import { Input, Row, Col } from 'antd';
 import { updateTitle, updateBody } from './actions';
+
+const { TextArea } = Input;
 
 const mapStateToProps = state => {
   return {
@@ -23,12 +26,31 @@ const mapDispachToProps = dispatch => {
 
 const DisplayEditor = ({ note, onUpdateTitle, onUpdateBody }) =>
   <div>
-    <h3>
-      {note.title}
-    </h3>
-    <p>
-      {note.body}
-    </p>
+    <Row style={{ marginBottom: 25 }}>
+      <Col span={20} offset={2}>
+        <h3>
+          <TextArea
+            autosize={{ minRows: 1 }}
+            placeholder="Title"
+            value={note.title}
+            onChange={({ target: { value: newTitle } }) =>
+              onUpdateTitle(newTitle)}
+          />
+        </h3>
+      </Col>
+    </Row>
+    <Row>
+      <Col span={20} offset={2}>
+        <p>
+          <TextArea
+            autosize={{ minRows: 6 }}
+            placeholder="Note content"
+            value={note.body}
+            onChange={({ target: { value: newBody } }) => onUpdateBody(newBody)}
+          />
+        </p>
+      </Col>
+    </Row>
   </div>;
 
 DisplayEditor.propTypes = {
