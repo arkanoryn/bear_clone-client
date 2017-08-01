@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import '../index.css';
 import { connect } from 'react-redux';
 import { Input, Row, Col } from 'antd';
-import { updateTitle, updateBody } from './actions';
+import { postNote } from './actions';
 
 const { TextArea } = Input;
 
@@ -15,11 +15,13 @@ const mapStateToProps = state => {
 
 const mapDispachToProps = dispatch => {
   return {
-    onUpdateTitle: title => {
-      dispatch(updateTitle(title));
+    onUpdateTitle: (note, title) => {
+      note = { ...note, title: title };
+      dispatch(postNote(note));
     },
-    onUpdateBody: body => {
-      dispatch(updateBody(body));
+    onUpdateBody: (note, body) => {
+      note = { ...note, body: body };
+      dispatch(postNote(note));
     }
   };
 };
@@ -34,7 +36,7 @@ const DisplayEditor = ({ note, onUpdateTitle, onUpdateBody }) =>
             placeholder="Title"
             value={note.title}
             onChange={({ target: { value: newTitle } }) =>
-              onUpdateTitle(newTitle)}
+              onUpdateTitle(note, newTitle)}
           />
         </h3>
       </Col>
@@ -45,8 +47,9 @@ const DisplayEditor = ({ note, onUpdateTitle, onUpdateBody }) =>
           <TextArea
             autosize={{ minRows: 6 }}
             placeholder="Note content"
-            value={note.body}
-            onChange={({ target: { value: newBody } }) => onUpdateBody(newBody)}
+            value={note.body || ''}
+            onChange={({ target: { value: newBody } }) =>
+              onUpdateBody(note, newBody)}
           />
         </p>
       </Col>
@@ -57,7 +60,7 @@ DisplayEditor.propTypes = {
   note: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired
+    body: PropTypes.string
   }),
   onUpdateTitle: PropTypes.func.isRequired,
   onUpdateBody: PropTypes.func.isRequired

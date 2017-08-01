@@ -6,7 +6,8 @@ import {
   UPDATE_TITLE,
   UPDATE_BODY,
   REQUEST_NOTES,
-  RECEIVE_NOTES
+  RECEIVE_NOTES,
+  RECEIVE_NOTE
 } from './types';
 
 const initialState = {
@@ -40,11 +41,13 @@ let NoteApp = (state = initialState, action) => {
       return Object.assign({}, state, { note: state.notes[noteId] });
 
     case UPDATE_TITLE:
+      let newNoteTitle = { ...state.note, title: action.title };
+
       return Object.assign({}, state, {
         notes: state.notes.map(
           note => (note.id === id ? { ...note, title: action.title } : note)
         ),
-        note: { ...state.note, title: action.title }
+        note: newNoteTitle
       });
 
     case UPDATE_BODY:
@@ -63,7 +66,26 @@ let NoteApp = (state = initialState, action) => {
     case RECEIVE_NOTES:
       return Object.assign({}, state, {
         isFetching: false,
-        notes: action.notes
+        notes: _.sortBy(action.notes, ['id'])
+      });
+
+    case RECEIVE_NOTE:
+      let newNote = action.note;
+      let notes;
+
+      notes = _.filter(state.notes, note => note.id >= 0);
+      if (
+        _.findIndex(state.notes, note => {
+          return note.id === newNote.id;
+        }) > 0
+      ) {
+        notes = notes.map(note => (note.id === newNote.id ? newNote : note));
+      } else {
+        notes = [...notes, newNote];
+      }
+      return Object.assign({}, state, {
+        notes: notes,
+        note: newNote
       });
 
     default:
