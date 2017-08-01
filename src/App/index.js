@@ -19,7 +19,9 @@ class App extends Component {
               left: 0
             }}
           >
-            <div className="logo" />
+            <div style={{ padding: 16 }}>
+              <h2 style={{ color: '#ddd' }}>Bear Clone</h2>
+            </div>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
                 <Icon type="user" />
