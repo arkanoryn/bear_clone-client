@@ -1,5 +1,13 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
+import {
+  CREATE_NOTE,
+  TOGGLE_NOTE,
+  UPDATE_TITLE,
+  UPDATE_BODY,
+  REQUEST_NOTES,
+  RECEIVE_NOTES
+} from './types';
 
 const initialState = {
   isFetching: false,
@@ -22,15 +30,16 @@ let NoteApp = (state = initialState, action) => {
   let id = state.note.id;
 
   switch (action.type) {
-    case 'CREATE_NOTE':
+    case CREATE_NOTE:
       return Object.assign({}, state, {
         notes: [...state.notes, initialNote(action.id)],
         note: initialNote(action.id)
       });
 
-    case 'TOGGLE_NOTE':
+    case TOGGLE_NOTE:
       return Object.assign({}, state, { note: state.notes[noteId] });
-    case 'UPDATE_TITLE':
+
+    case UPDATE_TITLE:
       return Object.assign({}, state, {
         notes: state.notes.map(
           note => (note.id === id ? { ...note, title: action.title } : note)
@@ -38,7 +47,7 @@ let NoteApp = (state = initialState, action) => {
         note: { ...state.note, title: action.title }
       });
 
-    case 'UPDATE_BODY':
+    case UPDATE_BODY:
       return Object.assign({}, state, {
         notes: state.notes.map(
           note => (note.id === id ? { ...note, body: action.body } : note)
@@ -46,12 +55,12 @@ let NoteApp = (state = initialState, action) => {
         note: { ...state.note, body: action.body }
       });
 
-    case 'REQUEST_NOTES':
+    case REQUEST_NOTES:
       return Object.assign({}, state, {
         isFetching: true
       });
 
-    case 'RECEIVE_NOTES':
+    case RECEIVE_NOTES:
       return Object.assign({}, state, {
         isFetching: false,
         notes: action.notes

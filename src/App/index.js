@@ -28,7 +28,7 @@ class App extends Component {
             </Menu>
           </Sider>
           <NotesList />
-          <Layout style={{ marginLeft: 320 }}>
+          <Layout style={{ marginLeft: 320, backgroundColor: '#fff' }}>
             <Content style={{ overflow: 'initial', margin: 30, padding: 16 }}>
               <Editor />
             </Content>
