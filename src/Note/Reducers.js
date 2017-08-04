@@ -10,6 +10,7 @@ const mockNotes = [
 
 const initialState = {
   notes: mockNotes,
+  trash: [],
   note: -1,
   over: -1
 };
@@ -19,18 +20,27 @@ let NotesReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SELECT_NOTE:
-      return (Object.assign({}, state, {...state, note: noteIndex}));
+      return (Object.assign({}, state, {...state, note: action.id}));
 
     case OVER_NOTE:
       return(Object.assign({}, state, {...state, over: action.id}));
 
     case TRASH_NOTE:
-      return(Object.assign({}, state,
-                           {
-                             notes: state.notes.map(
-                               note => (note.id === action.id ? { ...note, status: 'TRASH' } : note)
-                             ),
-                           }));
+      let trashedNote = state.notes[noteIndex];
+
+      if (trashedNote.id !== state.note) {
+        let newNotes = _.remove(state.notes, (note) => {return (note.id !== action.id)});
+
+        trashedNote = {...trashedNote, status: 'TRASH'};
+
+        return(Object.assign({}, state,
+                             {
+                               trash: {...state.trash, trashedNote},
+                               notes: newNotes,
+                             }));
+      } else {
+        return state;
+      }
 
     default:
       return state;
