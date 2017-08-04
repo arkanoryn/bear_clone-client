@@ -22,6 +22,7 @@ const latestAvailableId = function latestAvailableId(notes) {
 const initialState = {
   noteId: -1,
   notes: mockNotes,
+  status: GENERAL,
 };
 
 let NotesListReducer = (state = initialState, action) => {
@@ -37,6 +38,7 @@ let NotesListReducer = (state = initialState, action) => {
         id: latestAvailableId(state.notes),
         title: '',
         body: '',
+        status: GENERAL
       };
 
       return (Object.assign(
