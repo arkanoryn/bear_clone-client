@@ -1,4 +1,4 @@
-import { SELECT_NOTE } from './Types'
+import { SELECT_NOTE } from './Types';
 
 export const selectNote = function selectNote(id) {
   return ({

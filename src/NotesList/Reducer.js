@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import { SELECT_NOTE } from './Types';
+import { UPDATE_BODY, UPDATE_TITLE } from '../Note/Types';
+import NoteReducer from '../Note/Reducer'
 
 const mockNotes = [
   {id: 1, title: "This is my first note", body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl."},
@@ -9,15 +11,26 @@ const mockNotes = [
 
 const initialState = {
   notes: mockNotes,
-  note: -1
+  noteId: -1
 };
 
 let NotesListReducer = (state = initialState, action) => {
-  let noteId = _.findIndex(state.notes, (x) => {return (x.id === action.id)});
+  let noteIndex = _.findIndex(state.notes, (x) => {return (x.id === action.id)});
+  let updatedNote;
 
   switch (action.type) {
     case SELECT_NOTE:
-      return (Object.assign({}, state, {...state, note: noteId}));
+      return (Object.assign({}, state, {...state, noteId: action.id}));
+
+    case UPDATE_BODY:
+    case UPDATE_TITLE:
+      updatedNote = NoteReducer(state.notes[noteIndex], action);
+
+      return (Object.assign(
+        {},
+        state,
+        {...state, notes: state.notes.map((note) => (note.id === state.noteId) ? updatedNote : note)}
+      ));
 
     default:
       return state;
