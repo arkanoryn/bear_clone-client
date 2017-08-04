@@ -62,7 +62,6 @@ const mapStateToProps = function mapStateToProps(state) {
 const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return ({
     onNoteClick: (id) => {
-      console.log(`clicked: ${id}`)
       dispatch(selectNote(Number(id)))
     }
   });

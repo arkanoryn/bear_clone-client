@@ -18,7 +18,6 @@ let NotesReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SELECT_NOTE:
-      console.log(`noteId: ${noteId}, action: ${action.id}`);
       return (Object.assign({}, state, {...state, note: noteId}));
 
     default:
