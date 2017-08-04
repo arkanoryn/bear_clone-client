@@ -55,7 +55,7 @@ RenderNotesList.propTypes = Props;
 
 const mapStateToProps = function mapStateToProps(state) {
   return ({
-    notes: state.NotesReducer.notes
+    notes: state.NotesListReducer.notes
   });
 };
 

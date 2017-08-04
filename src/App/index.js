@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { Layout } from 'antd';
-import RootMenu from '../Layout/RootMenu'
-import NotesList from '../Note/NotesList'
-import Note from '../Note/Note'
+import RootMenu from '../RootMenu'
+import NotesList from '../NotesList'
+import Note from '../Note'
 
 const rootMenuItems = [
   { id: 1, title: "General", icon: "apple" },

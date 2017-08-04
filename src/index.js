@@ -6,7 +6,7 @@ import { createLogger } from 'redux-logger'
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import NoteApp from './Note/Reducers'
+import NoteApp from './Reducers'
 
 const loggerMiddleware = createLogger();
 

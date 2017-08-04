@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import _ from 'lodash';
 import { SELECT_NOTE } from './Types';
 
@@ -13,7 +12,7 @@ const initialState = {
   note: -1
 };
 
-let NotesReducer = (state = initialState, action) => {
+let NotesListReducer = (state = initialState, action) => {
   let noteId = _.findIndex(state.notes, (x) => {return (x.id === action.id)});
 
   switch (action.type) {
@@ -25,6 +24,4 @@ let NotesReducer = (state = initialState, action) => {
   }
 };
 
-let NoteApp = combineReducers({NotesReducer});
-
-export default NoteApp;
+export default NotesListReducer;
