@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Layout, Menu, Button, Input, Row, Col } from 'antd';
-import { selectNote } from './Actions';
+import { newNote, selectNote } from './Actions';
 
 const { Sider }  = Layout;
 const { Search } = Input;
@@ -16,9 +16,10 @@ const Props = {
     }).isRequired
   ).isRequired,
   onNoteClick: PropTypes.func.isRequired,
+  onNewClick: PropTypes.func.isRequired,
 };
 
-const Header = function Header() {
+const Header = function Header({onNewClick}) {
   return (
     <div style={{ padding: 16 }}>
       <Row>
@@ -27,17 +28,17 @@ const Header = function Header() {
         </Col>
 
         <Col span={2} offset={1}>
-          <Button type="primary" shape="circle" icon="plus" />
+          <Button type="primary" shape="circle" icon="plus" onClick={onNewClick} />
         </Col>
       </Row>
     </div>
   );
 };
 
-const RenderNotesList = function NotesList({ notes, onNoteClick }) {
+const RenderNotesList = function NotesList({ notes, onNoteClick, onNewClick }) {
   return (
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
-      <Header />
+      <Header onNewClick={onNewClick} />
 
       <Menu theme="light" mode="inline" onClick={({item, key, path}) => onNoteClick(key)}>
         {
@@ -61,9 +62,8 @@ const mapStateToProps = function mapStateToProps(state) {
 
 const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return ({
-    onNoteClick: (id) => {
-      dispatch(selectNote(Number(id)))
-    }
+    onNoteClick: (id) => {dispatch(selectNote(Number(id)))},
+    onNewClick: () => {dispatch(newNote())},
   });
 };
 

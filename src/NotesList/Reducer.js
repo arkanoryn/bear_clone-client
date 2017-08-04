@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SELECT_NOTE } from './Types';
+import { NEW_NOTE, SELECT_NOTE } from './Types';
 import { UPDATE_BODY, UPDATE_TITLE } from '../Note/Types';
 import NoteReducer from '../Note/Reducer'
 
@@ -14,11 +14,33 @@ const initialState = {
   noteId: -1
 };
 
+const latestAvailableId = function latestAvailableId(notes) {
+  let lastNote = _.last(notes);
+
+  return (lastNote.id + 1);
+};
+
 let NotesListReducer = (state = initialState, action) => {
   let noteIndex = _.findIndex(state.notes, (x) => {return (x.id === action.id)});
   let updatedNote;
 
   switch (action.type) {
+    case NEW_NOTE:
+      let newNote = {
+        id: latestAvailableId(state.notes),
+        title: '',
+        body: '',
+      };
+
+      return (Object.assign(
+        {},
+        state,
+        {
+          notes: [...state.notes, newNote],
+          noteId: newNote.id,
+        }
+      ));
+
     case SELECT_NOTE:
       return (Object.assign({}, state, {...state, noteId: action.id}));
 
