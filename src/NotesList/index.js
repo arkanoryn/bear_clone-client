@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Card, Col, Input, Layout, Menu, Row } from 'antd';
+import { Button, Col, Input, Layout, Menu, Row } from 'antd';
 import { overNote, selectNote, newNote, trashNote } from './Actions';
 
 const { Sider }  = Layout;
@@ -15,6 +15,8 @@ const Props = {
       body: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
+  currentNoteId: PropTypes.number.isRequired,
+  over: PropTypes.number.isRequired,
   onNoteClick: PropTypes.func.isRequired,
   onNewClick: PropTypes.func.isRequired,
   onMouseEnterNote: PropTypes.func.isRequired,
@@ -37,7 +39,7 @@ const Header = function Header({onNewClick}) {
   );
 };
 
-const RenderNotesList = function NotesList({ notes, over, onNewClick, onNoteClick, onMouseEnterNote, onTrashNoteClick }) {
+const RenderNotesList = function NotesList({ notes, currentNoteId, over, onNewClick, onNoteClick, onMouseEnterNote, onTrashNoteClick }) {
   return (
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
       <Header onNewClick={onNewClick} />
@@ -45,32 +47,32 @@ const RenderNotesList = function NotesList({ notes, over, onNewClick, onNoteClic
     <Menu
     theme="light"
     mode="inline"
-    onClick={({ key, a, b, c }) => onNoteClick(key)}
     >
-      {
-        notes.map(note =>
-          <Menu.Item key={note.id}
-          onMouseEnter={() => onMouseEnterNote(note.id)}
-          >
-            <Col span={20}>
-              <span className="nav-text">
-                {note.title}
+    {
+      notes.map(note =>
+        <Menu.Item key={note.id}
+        onMouseEnter={() => onMouseEnterNote(note.id)}
+        >
+        <Col span={20} onClick={() => onNoteClick(note.id)}>
+        <span className="nav-text">
+        {note.title}
               </span>
-            </Col>
+        </Col>
 
-            <Col span={2} offset={1}>
-              { note.id === over ?
-                <Button
-                  type="danger"
-                  size="small"
-                  icon="delete"
-                  onClick={() => onTrashNoteClick(note.id)}
-                />
-                : ""
-              }
-            </Col>
+        <Col span={2} offset={1}>
+          { note.id === over ?
+            <Button
+              type="danger"
+              size="small"
+              icon="delete"
+              onClick={() => onTrashNoteClick(note.id)}
+              disabled={note.id === currentNoteId}
+            />
+            : ""
+          }
+        </Col>
           </Menu.Item>
-        )}
+      )}
     </Menu>
     </Sider>
   );
@@ -80,6 +82,7 @@ RenderNotesList.propTypes = Props;
 
 const mapStateToProps = function mapStateToProps(state) {
   return ({
+    currentNoteId: state.NotesListReducer.noteId,
     notes: state.NotesListReducer.notes,
     over: state.NotesListReducer.over,
   });
