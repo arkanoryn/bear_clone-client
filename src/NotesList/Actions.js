@@ -1,4 +1,4 @@
-import { OVER_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
+import { OVER_NOTE, NEW_NOTE, SELECT_NOTE, TRASH_NOTE } from './Types';
 
 export const overNote = function overNote(id) {
   return ({
@@ -16,4 +16,11 @@ export const selectNote = function selectNote(id) {
 
 export const newNote = function newNote() {
   return ({type: NEW_NOTE});
+}
+
+export const trashNote = function trashNote(id) {
+  return ({
+    type: TRASH_NOTE,
+    id
+  });
 }

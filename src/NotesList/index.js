@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Card, Col, Input, Layout, Row } from 'antd';
-import { overNote, newNote, selectNote } from './Actions';
+import { Button, Card, Col, Input, Layout, Menu, Row } from 'antd';
+import { overNote, selectNote, newNote, trashNote } from './Actions';
 
 const { Sider }  = Layout;
 const { Search } = Input;
@@ -18,6 +18,7 @@ const Props = {
   onNoteClick: PropTypes.func.isRequired,
   onNewClick: PropTypes.func.isRequired,
   onMouseEnterNote: PropTypes.func.isRequired,
+  onTrashNoteClick: PropTypes.func.isRequired,
 };
 
 const Header = function Header({onNewClick}) {
@@ -36,31 +37,41 @@ const Header = function Header({onNewClick}) {
   );
 };
 
-const RenderNotesList = function NotesList({ notes, over, onNoteClick, onNewClick, onMouseEnterNote }) {
+const RenderNotesList = function NotesList({ notes, over, onNewClick, onNoteClick, onMouseEnterNote, onTrashNoteClick }) {
   return (
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
       <Header onNewClick={onNewClick} />
 
-    {notes.map((note) =>
-      <Row key={note.id}>
-        <Card.Grid
-        style={{ width: '100%' }}
-            onClick={() => onNoteClick(note.id)}
-            onMouseEnter={() => onMouseEnterNote(note.id)}
+    <Menu
+    theme="light"
+    mode="inline"
+    onClick={({ key, a, b, c }) => onNoteClick(key)}
+    >
+      {
+        notes.map(note =>
+          <Menu.Item key={note.id}
+          onMouseEnter={() => onMouseEnterNote(note.id)}
           >
-          <Col span={20}>
-            {note.title}
-          </Col>
+            <Col span={20}>
+              <span className="nav-text">
+                {note.title}
+              </span>
+            </Col>
 
-          <Col span={2} offset={1}>
-            { note.id === over ?
-              <Button type="danger" size="small" shape="circle" icon="delete" />
-              : ""
-            }
-          </Col>
-        </Card.Grid>
-      </Row>
-    )}
+            <Col span={2} offset={1}>
+              { note.id === over ?
+                <Button
+                  type="danger"
+                  size="small"
+                  icon="delete"
+                  onClick={() => onTrashNoteClick(note.id)}
+                />
+                : ""
+              }
+            </Col>
+          </Menu.Item>
+        )}
+    </Menu>
     </Sider>
   );
 };
@@ -79,6 +90,7 @@ const mapDispatchToProps = function mapDispatchToProps(dispatch) {
     onNoteClick: (id) => {dispatch(selectNote(Number(id)))},
     onNewClick: () => {dispatch(newNote())},
     onMouseEnterNote: (id) => {dispatch(overNote(id))},
+    onTrashNoteClick: (id) => {dispatch(trashNote(id))},
   });
 };
 
