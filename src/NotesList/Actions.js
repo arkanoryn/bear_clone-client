@@ -1,4 +1,11 @@
-import { NEW_NOTE, SELECT_NOTE } from './Types';
+import { OVER_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
+
+export const overNote = function overNote(id) {
+  return ({
+    type: OVER_NOTE,
+    id
+  });
+}
 
 export const selectNote = function selectNote(id) {
   return ({
