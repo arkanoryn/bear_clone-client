@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout, Menu, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 
 const { Sider }   = Layout;
 const { Divider } = Menu;
@@ -10,8 +11,10 @@ const RootMenu = function RootMenu({items, tags}) {
     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
     { items.map((item) =>
       <Menu.Item key={item.id}>
-        <Icon type={item.icon} />
-        <span className="nav-text">{item.title}</span>
+        <Link to={item.path}>
+          <Icon type={item.icon} />
+          <span className="nav-text">{item.title}</span>
+        </Link>
       </Menu.Item>
     )}
     <Divider />

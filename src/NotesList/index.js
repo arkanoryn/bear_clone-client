@@ -1,8 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React                                     from 'react';
+import PropTypes                                 from 'prop-types';
+import { connect }                               from 'react-redux';
 import { Button, Col, Input, Layout, Menu, Row } from 'antd';
-import { overNote, selectNote, newNote, trashNote } from './Actions';
+import _                                         from 'lodash';
+import { overNote, selectNote, newNote }         from './Actions';
+import { updateStatus }                          from '../Note/Actions';
+import { GENERAL, TRASH }                        from '../Note/Types';
 
 const { Sider }  = Layout;
 const { Search } = Input;
@@ -16,11 +19,12 @@ const Props = {
     }).isRequired
   ).isRequired,
   currentNoteId: PropTypes.number.isRequired,
-  over: PropTypes.number.isRequired,
+  over: PropTypes.number,
   onNoteClick: PropTypes.func.isRequired,
   onNewClick: PropTypes.func.isRequired,
   onMouseEnterNote: PropTypes.func.isRequired,
   onTrashNoteClick: PropTypes.func.isRequired,
+  onAddNoteClick: PropTypes.func.isRequired,
 };
 
 const Header = function Header({onNewClick}) {
@@ -39,17 +43,48 @@ const Header = function Header({onNewClick}) {
   );
 };
 
-const RenderNotesList = function NotesList({ notes, currentNoteId, over, onNewClick, onNoteClick, onMouseEnterNote, onTrashNoteClick }) {
+const NoteButtons = ({isTrash, note, currentNoteId, onTrashNoteClick, onAddNoteClick}) => {
+  if (isTrash) {
+    return (<Button
+              type="primary"
+              size="small"
+              icon="file-add"
+              onClick={() => onAddNoteClick(note.id)}
+              disabled={note.id === currentNoteId}
+    />);
+  } else {
+    return (<Button
+              type="danger"
+              size="small"
+              icon="delete"
+              onClick={() => onTrashNoteClick(note.id)}
+              disabled={note.id === currentNoteId}
+    />);
+  }
+}
+
+const RenderNotesList = function RenderNotesList({match, notes, currentNoteId, over, onNewClick, onNoteClick, onMouseEnterNote, onTrashNoteClick, onAddNoteClick}) {
+  const isTrash   = match.path === '/trash';
+  let noteIndex = _.findIndex(notes, (x) => {return (x.id === currentNoteId)});
+  let list;
+
+  if (isTrash) {     list = _.filter(notes, {status: TRASH});
+  } else {
+    list = _.filter(notes, {status:GENERAL});
+  }
+
   return (
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
-      <Header onNewClick={onNewClick} />
+    <Header onNewClick={onNewClick} />
+    {console.log(`>>>>>>>>>>>>>>> ${noteIndex}`)}
 
     <Menu
-    theme="light"
-    mode="inline"
+      theme="light"
+      mode="inline"
+      defaultSelectedKeys={noteIndex !== -1 ? [noteIndex.toString()] : []}
     >
     {
-      notes.map(note =>
+      list.map(note =>
         <Menu.Item key={note.id}
         onMouseEnter={() => onMouseEnterNote(note.id)}
         >
@@ -60,15 +95,15 @@ const RenderNotesList = function NotesList({ notes, currentNoteId, over, onNewCl
         </Col>
 
         <Col span={2} offset={1}>
-          { note.id === over ?
-            <Button
-              type="danger"
-              size="small"
-              icon="delete"
-              onClick={() => onTrashNoteClick(note.id)}
-              disabled={note.id === currentNoteId}
-            />
-            : ""
+        { note.id === over ?
+          <NoteButtons
+            isTrash={isTrash}
+            note={note}
+            {...currentNoteId}
+            onTrashNoteClick={onTrashNoteClick}
+            onAddNoteClick={onAddNoteClick}
+          />
+        : ""
           }
         </Col>
           </Menu.Item>
@@ -90,10 +125,11 @@ const mapStateToProps = function mapStateToProps(state) {
 
 const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return ({
-    onNoteClick: (id) => {dispatch(selectNote(Number(id)))},
-    onNewClick: () => {dispatch(newNote())},
+    onNoteClick:      (id) => {dispatch(selectNote(Number(id)))},
+    onNewClick:       ()   => {dispatch(newNote())},
     onMouseEnterNote: (id) => {dispatch(overNote(id))},
-    onTrashNoteClick: (id) => {dispatch(trashNote(id))},
+    onTrashNoteClick: (id) => {dispatch(updateStatus(id, TRASH))},
+    onAddNoteClick:   (id) => {dispatch(updateStatus(id, GENERAL))},
   });
 };
 
