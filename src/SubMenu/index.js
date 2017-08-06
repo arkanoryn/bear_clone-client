@@ -1,13 +1,13 @@
-import React                   from 'react';
-import PropTypes               from 'prop-types';
-import { connect }             from 'react-redux';
-import { Layout, Spin, notification }        from 'antd';
-import _                       from 'lodash';
-import { selectNote, newNote } from '../NotesList/Actions';
-import { updateStatus }        from '../Note/Actions';
-import { GENERAL, TRASH }      from '../Note/Types';
-import NotesList               from '../NotesList';
-import Header                  from './Header';
+import React, { Component }                    from 'react';
+import PropTypes                               from 'prop-types';
+import { connect }                             from 'react-redux';
+import { Layout, Spin, message, notification } from 'antd';
+import _                                       from 'lodash';
+import { selectNote, newNote }                 from '../NotesList/Actions';
+import { updateStatus }                        from '../Note/Actions';
+import { GENERAL, TRASH }                      from '../Note/Types';
+import NotesList                               from '../NotesList';
+import Header                                  from './Header';
 
 const { Sider }  = Layout;
 
@@ -27,47 +27,68 @@ const Props = {
   onPutBackNoteClick: PropTypes.func.isRequired,
 };
 
-const RenderSubMenu = function RenderSubMenu({match,
-                                              allNotes,
-                                              errors,
-                                              isFetching,
-                                              onNoteClick,
-                                              onNewNoteClick,
-                                              onTrashNoteClick,
-                                              onPutBackNoteClick}) {
-  const isTrash   = match.path === '/trash';
-  let notes;
-  let action;
+class SubMenu extends Component {
+  componentDidMount() {
+    const { isFetching } = this.props;
 
-  if (isTrash) {
-    notes = _.filter(allNotes, {status: TRASH});
-    action = onPutBackNoteClick;
-  } else {
-    notes = _.filter(allNotes, {status:GENERAL});
-    action = onTrashNoteClick;
+    if (isFetching) {
+      message.loading('Fetching notes...', 0);
+    }
   }
 
-  // TOFIX: This should be on MountDidUpdate
-  if (errors.length !== 0) {
-    notification['error']({
-      message: 'Something went wrong!',
-      description: errors.message,
-      duration: 0,
-    });
+  componentDidUpdate(prevProps, prevState) {
+    const { errors, isFetching } = this.props;
+
+    if (errors.length !== 0) {
+      notification['error']({
+        message: 'Something went wrong!',
+        description: errors.message,
+        duration: 0,
+      });
+    }
+
+    if (isFetching !== prevProps) {
+      if (isFetching) {
+        message.loading('Fetching notes...', 0);
+      } else {
+        message.destroy();
+      }
+    }
   }
 
-  return (
-    <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
-      <Header onNewNoteClick={onNewNoteClick} />
+  render () {
+    const {match,
+           allNotes,
+           isFetching,
+           onNoteClick,
+           onNewNoteClick,
+           onTrashNoteClick,
+           onPutBackNoteClick} = this.props;
+    const isTrash   = match.path === '/trash';
+    let notes;
+    let action;
 
-    <Spin spinning={isFetching} delay={2000} style={{ marginTop: '30px' }}>
-      <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
-    </Spin>
-    </Sider>
-  );
-};
+    if (isTrash) {
+      notes = _.filter(allNotes, {status: TRASH});
+      action = onPutBackNoteClick;
+    } else {
+      notes = _.filter(allNotes, {status:GENERAL});
+      action = onTrashNoteClick;
+    }
 
-RenderSubMenu.propTypes = Props;
+    return (
+      <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
+        <Header onNewNoteClick={onNewNoteClick} />
+
+        <Spin spinning={isFetching} delay={2000} style={{ marginTop: '30px' }}>
+          <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
+        </Spin>
+      </Sider>
+    );
+  }
+}
+
+SubMenu.propTypes = Props;
 
 const mapStateToProps = function mapStateToProps(state) {
   return ({
@@ -86,5 +107,5 @@ const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   });
 };
 
-const SubMenu = connect(mapStateToProps, mapDispatchToProps)(RenderSubMenu);
+SubMenu = connect(mapStateToProps, mapDispatchToProps)(SubMenu);
 export default SubMenu;
