@@ -21,6 +21,7 @@ const initialState = {
   isFetching: false,
   noteId: -1,
   notes: [],
+  lobbyChannel: null,
 };
 
 let NotesListReducer = (state = initialState, action) => {
@@ -66,12 +67,20 @@ let NotesListReducer = (state = initialState, action) => {
         }
       ));
 
+    case 'NOTES_LIST_UPDATED':
     case 'NOTE_UPDATED':
       return (Object.assign(
         {},
         state,
         {...state, notes: state.notes.map((note) => note.id === action.note.note.id ? action.note.note : note)}
       ));
+
+    case 'CONNECTED_TO_LOBBY':
+      return (
+        {},
+        state,
+        {...state, lobbyChannel: action.channel}
+      );
 
     case REQUEST_NOTES:
       return (Object.assign({}, state, {isFetching: true}));

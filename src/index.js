@@ -11,6 +11,7 @@ import registerServiceWorker            from './registerServiceWorker';
 import NoteApp                          from './Reducers';
 import { fetchNotes }                   from './NotesList/Actions';
 import { connectToSocket } from './Session/Action';
+import { connectToLobby } from './Note/Actions';
 
 const loggerMiddleware = createLogger();
 
@@ -20,6 +21,7 @@ let store = createStore(NoteApp,
 
 store.dispatch(fetchNotes());
 store.dispatch(connectToSocket());
+store.dispatch(connectToLobby(store.getState().SessionReducer.socket));
 
 ReactDOM.render(
   <Provider store={store}>

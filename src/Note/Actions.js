@@ -1,5 +1,22 @@
 import { UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE } from './Types';
 
+export const connectToLobby = function connectToLobby(socket) {
+  return (dispatch) => {
+    if (!socket) { return false; }
+    const channel = socket.channel(`notes:lobby`);
+
+    channel.on('note_updated', (note) => {
+      dispatch({type: 'NOTES_LIST_UPDATED', note});
+    })
+
+    channel.join().receive('ok', () => {
+      dispatch({ type: 'CONNECTED_TO_LOBBY', channel });
+    });
+
+    return false;
+  };
+}
+
 export const connectToChannel = function connectToChannel(socket, noteId) {
   return (dispatch) => {
     if (!socket) { return false; }
