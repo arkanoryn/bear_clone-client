@@ -1,27 +1,18 @@
-import _ from 'lodash';
-import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
-import { GENERAL, UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE, TRASH } from '../Note/Types';
-import NoteReducer from '../Note/Reducer'
-
-const mockNotes = [
-  {id: 1, title: "This is my first note", body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.", status: GENERAL},
-  {id: 2, title: "Lorem", body: "Nullam libero mauris, consequat quis, varius et, dictum id, arcu.\nDonec at pede.\nSed diam.", status: GENERAL},
-  {id: 3, title: "Ipsum", body: "Nullam libero mauris, consequat quis, varius et, dictum id, arcu.\nDonec at pede.\nSed diam.", status: GENERAL},
-  {id: 4, title: "Ipsum", body: "Nullam libero mauris, consequat quis, varius et, dictum id, arcu.\nDonec at pede.\nSed diam.", status: TRASH},
-  {id: 5, title: "Ipsum", body: "Nullam libero mauris, consequat quis, varius et, dictum id, arcu.\nDonec at pede.\nSed diam.", status: GENERAL},
-  {id: 6, title: "Ipsum", body: "Nullam libero mauris, consequat quis, varius et, dictum id, arcu.\nDonec at pede.\nSed diam.", status: TRASH},
-  {id: 7, title: "Ipsum", body: "Nullam libero mauris, consequat quis, varius et, dictum id, arcu.\nDonec at pede.\nSed diam.", status: GENERAL},
-];
+import _                                                                                    from 'lodash';
+import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, REQUEST_NOTES, RECEIVE_NOTES, SELECT_NOTE } from './Types';
+import { GENERAL, UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE }                                from '../Note/Types';
+import NoteReducer                                                                          from '../Note/Reducer'
 
 const latestAvailableId = function latestAvailableId(notes) {
-  let lastNote = _.last(notes);
+  let lastNote = _.last(notes) || {id: 0};
 
   return (lastNote.id + 1);
 };
 
 const initialState = {
+  isFetching: false,
   noteId: -1,
-  notes: mockNotes,
+  notes: [],
   status: GENERAL,
 };
 
@@ -57,6 +48,19 @@ let NotesListReducer = (state = initialState, action) => {
         {
           notes: [...state.notes, newNote],
           noteId: newNote.id,
+        }
+      ));
+
+    case REQUEST_NOTES:
+      return (Object.assign({}, state, {isFetching: true}));
+
+    case RECEIVE_NOTES:
+      return (Object.assign(
+        {},
+        state,
+        {
+          isFetching: false,
+          notes: action.notes,
         }
       ));
 

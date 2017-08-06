@@ -50,9 +50,9 @@ const RenderSubMenu = function RenderSubMenu({match,
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
       <Header onNewNoteClick={onNewNoteClick} />
 
-      <Spin size="large" spinning={isFetching} delay={500}>
-        <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
-      </Spin>
+    <Spin spinning={isFetching} delay={2000} style={{ marginTop: '30px' }}>
+      <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
+    </Spin>
     </Sider>
   );
 };
@@ -61,8 +61,8 @@ RenderSubMenu.propTypes = Props;
 
 const mapStateToProps = function mapStateToProps(state) {
   return ({
-    allNotes:      state.NotesListReducer.notes,
-    isFetching: true,
+    allNotes:   state.NotesListReducer.notes,
+    isFetching: state.NotesListReducer.isFetching,
   });
 };
 

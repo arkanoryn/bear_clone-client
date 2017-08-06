@@ -1,4 +1,19 @@
-import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
+import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, RECEIVE_NOTES, REQUEST_NOTES, SELECT_NOTE } from './Types';
+import API from '../API';
+
+export const fetchNotes = () => {
+  return function(dispatch) {
+    dispatch(requestNotes());
+
+    return API.fetch('/notes')
+              .then((response) => {
+                dispatch(receiveNotes(response));
+              })
+              .catch(() => {
+                dispatch({ type: 'FETCH_NOTES_FAILURE' });
+              });
+  };
+};
 
 export const overInNote = function overInNote(id) {
   return ({
@@ -13,6 +28,19 @@ export const overOutNote = function overOutNote(id) {
     id
   });
 }
+
+export const requestNotes = () => {
+  return {
+    type: REQUEST_NOTES
+  };
+};
+
+export const receiveNotes = (json) => {
+  return {
+    type: RECEIVE_NOTES,
+    notes: json.data
+  };
+};
 
 export const selectNote = function selectNote(id) {
   return ({

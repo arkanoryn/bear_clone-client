@@ -1,19 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { createLogger } from 'redux-logger';
-import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import NoteApp from './Reducers';
+import React                            from 'react';
+import ReactDOM                         from 'react-dom';
+import thunkMiddleware from 'redux-thunk';
+import { Provider }                     from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { createLogger }                 from 'redux-logger';
+import { BrowserRouter as Router }      from 'react-router-dom';
+import App                              from './App';
+import registerServiceWorker            from './registerServiceWorker';
+import NoteApp                          from './Reducers';
+import { fetchNotes }                   from './NotesList/Actions';
 
 const loggerMiddleware = createLogger();
 
 let store = createStore(NoteApp,
-                        applyMiddleware(loggerMiddleware)
+                        applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
+
+store.dispatch(fetchNotes()).then(() => console.log(store.getState()));
 
 ReactDOM.render(
   <Provider store={store}>
