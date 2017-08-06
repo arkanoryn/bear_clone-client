@@ -1,10 +1,10 @@
 import React                   from 'react';
 import PropTypes               from 'prop-types';
 import { connect }             from 'react-redux';
-import { Layout }              from 'antd';
+import { Layout, Spin }        from 'antd';
 import _                       from 'lodash';
 import { selectNote, newNote } from '../NotesList/Actions';
-import { updateStatus }       from '../Note/Actions';
+import { updateStatus }        from '../Note/Actions';
 import { GENERAL, TRASH }      from '../Note/Types';
 import NotesList               from '../NotesList';
 import Header                  from './Header';
@@ -19,6 +19,7 @@ const Props = {
       body: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
+  isFetching: PropTypes.bool.isRequired,
 
   onNoteClick:        PropTypes.func.isRequired,
   onNewNoteClick:     PropTypes.func.isRequired,
@@ -28,7 +29,7 @@ const Props = {
 
 const RenderSubMenu = function RenderSubMenu({match,
                                               allNotes,
-                                              currentNoteId,
+                                              isFetching,
                                               onNoteClick,
                                               onNewNoteClick,
                                               onTrashNoteClick,
@@ -49,7 +50,9 @@ const RenderSubMenu = function RenderSubMenu({match,
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
       <Header onNewNoteClick={onNewNoteClick} />
 
-      <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
+      <Spin size="large" spinning={isFetching} delay={500}>
+        <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
+      </Spin>
     </Sider>
   );
 };
@@ -59,6 +62,7 @@ RenderSubMenu.propTypes = Props;
 const mapStateToProps = function mapStateToProps(state) {
   return ({
     allNotes:      state.NotesListReducer.notes,
+    isFetching: true,
   });
 };
 
