@@ -91,7 +91,7 @@ let NotesListReducer = (state = initialState, action) => {
         state,
         {
           isFetching: false,
-          notes: action.notes,
+          notes: _.sortBy(action.notes, ['id']),
         }
       ));
 
