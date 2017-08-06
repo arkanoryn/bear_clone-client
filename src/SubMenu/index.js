@@ -52,6 +52,9 @@ class SubMenu extends Component {
         message.loading('Fetching notes...', 0);
       } else {
         message.destroy();
+        if (errors.length === 0) {
+          message.success('Notes successfully loaded! ;)');
+        }
       }
     }
   }
