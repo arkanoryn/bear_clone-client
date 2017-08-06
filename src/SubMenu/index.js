@@ -47,12 +47,12 @@ class SubMenu extends Component {
       });
     }
 
-    if (isFetching !== prevProps) {
+    if (isFetching !== prevProps.isFetching) {
       if (isFetching) {
         message.loading('Fetching notes...', 0);
       } else {
         message.destroy();
-        if (errors.length === 0) {
+        if (errors.length === 0 && prevProps.isFetching) {
           message.success('Notes successfully loaded! ;)');
         }
       }

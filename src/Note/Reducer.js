@@ -1,10 +1,13 @@
 import { GENERAL, UPDATE_BODY, UPDATE_TITLE, UPDATE_STATUS } from './Types';
 
 const initialState = {
-  id: -1,
-  title: '',
-  body: '',
-  status: GENERAL,
+  currentNote: {
+    id: -1,
+    title: '',
+    body: '',
+    status: GENERAL,
+  },
+  channel: null,
 }
 
 let NoteReducer = function NoteReducer(state = initialState, action) {
@@ -13,22 +16,32 @@ let NoteReducer = function NoteReducer(state = initialState, action) {
       return (Object.assign(
         {},
         state,
-        {body: action.body}
+        {...state.currentNote, body: action.body}
       ));
 
     case UPDATE_STATUS:
       return (Object.assign(
         {},
         state,
-        {status: action.status}
+        {...state.currentNote, status: action.status}
       ));
 
     case UPDATE_TITLE:
       return (Object.assign(
         {},
         state,
-        {title: action.title}
+        {...state.currentNote, title: action.title}
       ));
+
+    case 'NOTE_CONNECTED_TO_CHANNEL':
+      return {
+        ...state,
+        channel: action.channel,
+        currentNote: action.response.note,
+      };
+
+    case 'USER_CHANGED_NOTE':
+      return initialState;
 
     default:
       return state;
