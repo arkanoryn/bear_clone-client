@@ -1,7 +1,15 @@
-import _                                                                                    from 'lodash';
-import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, REQUEST_NOTES, RECEIVE_NOTES, SELECT_NOTE } from './Types';
-import { GENERAL, UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE }                                from '../Note/Types';
-import NoteReducer                                                                          from '../Note/Reducer'
+import _                                                     from 'lodash';
+import {
+  OVER_IN_NOTE,
+  OVER_OUT_NOTE,
+  NEW_NOTE,
+  REQUEST_NOTES,
+  REQUEST_NOTES_FAILURE,
+  RECEIVE_NOTES,
+  SELECT_NOTE,
+}                                                            from './Types';
+import { GENERAL, UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE } from '../Note/Types';
+import NoteReducer                                           from '../Note/Reducer'
 
 const latestAvailableId = function latestAvailableId(notes) {
   let lastNote = _.last(notes) || {id: 0};
@@ -10,6 +18,7 @@ const latestAvailableId = function latestAvailableId(notes) {
 };
 
 const initialState = {
+  errors: [],
   isFetching: false,
   noteId: -1,
   notes: [],
@@ -48,6 +57,17 @@ let NotesListReducer = (state = initialState, action) => {
         {
           notes: [...state.notes, newNote],
           noteId: newNote.id,
+        }
+      ));
+
+    case REQUEST_NOTES_FAILURE:
+      return (Object.assign(
+        {},
+        state,
+        {
+          isFetching: false,
+          notes: [],
+          errors: action.errors
         }
       ));
 

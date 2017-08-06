@@ -1,7 +1,7 @@
 import React                   from 'react';
 import PropTypes               from 'prop-types';
 import { connect }             from 'react-redux';
-import { Layout, Spin }        from 'antd';
+import { Layout, Spin, notification }        from 'antd';
 import _                       from 'lodash';
 import { selectNote, newNote } from '../NotesList/Actions';
 import { updateStatus }        from '../Note/Actions';
@@ -29,6 +29,7 @@ const Props = {
 
 const RenderSubMenu = function RenderSubMenu({match,
                                               allNotes,
+                                              errors,
                                               isFetching,
                                               onNoteClick,
                                               onNewNoteClick,
@@ -46,6 +47,15 @@ const RenderSubMenu = function RenderSubMenu({match,
     action = onTrashNoteClick;
   }
 
+  // TOFIX: This should be on MountDidUpdate
+  if (errors.length !== 0) {
+    notification['error']({
+      message: 'Something went wrong!',
+      description: errors.message,
+      duration: 0,
+    });
+  }
+
   return (
     <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 120, backgroundColor: '#fff' }}>
       <Header onNewNoteClick={onNewNoteClick} />
@@ -61,6 +71,7 @@ RenderSubMenu.propTypes = Props;
 
 const mapStateToProps = function mapStateToProps(state) {
   return ({
+    errors:     state.NotesListReducer.errors,
     allNotes:   state.NotesListReducer.notes,
     isFetching: state.NotesListReducer.isFetching,
   });

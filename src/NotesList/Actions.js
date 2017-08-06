@@ -1,4 +1,4 @@
-import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, RECEIVE_NOTES, REQUEST_NOTES, SELECT_NOTE } from './Types';
+import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, RECEIVE_NOTES, REQUEST_NOTES, REQUEST_NOTES_FAILURE, SELECT_NOTE } from './Types';
 import API from '../API';
 
 export const fetchNotes = () => {
@@ -9,8 +9,8 @@ export const fetchNotes = () => {
               .then((response) => {
                 dispatch(receiveNotes(response));
               })
-              .catch(() => {
-                dispatch({ type: 'FETCH_NOTES_FAILURE' });
+              .catch((e) => {
+                dispatch(requestNotesFailure(e));
               });
   };
 };
@@ -34,6 +34,13 @@ export const requestNotes = () => {
     type: REQUEST_NOTES
   };
 };
+
+export const requestNotesFailure = (errors) => {
+  return {
+    type: REQUEST_NOTES_FAILURE,
+    errors
+  };
+}
 
 export const receiveNotes = (json) => {
   return {
