@@ -5,6 +5,10 @@ export const connectToChannel = function connectToChannel(socket, noteId) {
     if (!socket) { return false; }
     const channel = socket.channel(`notes:${noteId}`);
 
+    channel.on('note_updated', (note) => {
+      dispatch({type: 'NOTE_UPDATED', note});
+    })
+
     channel.join().receive('ok', (response) => {
       dispatch({ type: 'NOTE_CONNECTED_TO_CHANNEL', response, channel });
     });
@@ -43,5 +47,13 @@ export const updateTitle = function updateTitle(id, title) {
     type: UPDATE_TITLE,
     id,
     title
+  });
+}
+
+export const updateNote = function updateNote(channel, data) {
+  return (dispatch) => new Promise((resolve, reject) => {
+    channel.push('update_note', data)
+           .receive('ok', () => console.log('msg updated.'))
+           .receive('error', () => reject());
   });
 }

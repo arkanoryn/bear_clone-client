@@ -16,22 +16,30 @@ let NoteReducer = function NoteReducer(state = initialState, action) {
       return (Object.assign(
         {},
         state,
-        {...state.currentNote, body: action.body}
+        {...state, currentNote: {...state.currentNote, body: action.body}}
       ));
 
     case UPDATE_STATUS:
       return (Object.assign(
         {},
         state,
-        {...state.currentNote, status: action.status}
+        {...state, currentNote: {...state.currentNote, status: action.status}}
       ));
 
     case UPDATE_TITLE:
       return (Object.assign(
         {},
         state,
-        {...state.currentNote, title: action.title}
+        {...state, currentNote: {...state.currentNote, title: action.title}}
       ));
+
+    case 'NOTE_UPDATED':
+      return (Object.assign(
+        {},
+        state,
+        {...state, currentNote: action.note.note}
+      ));
+
 
     case 'NOTE_CONNECTED_TO_CHANNEL':
       return {

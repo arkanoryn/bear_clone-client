@@ -1,29 +1,23 @@
 import React, { Component }        from 'react';
 import { connect }                 from 'react-redux';
 import PropTypes                   from 'prop-types';
-import _                           from 'lodash';
 import { Col, Input, Layout, Row } from 'antd';
 import {
   connectToChannel,
   leaveChannel,
   updateBody,
-  updateTitle
+  updateTitle,
+  updateNote,
 }                                  from './Actions';
 
 const { Content }  = Layout;
 const { TextArea } = Input;
 const Props        = {
-  notes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id:        PropTypes.number.isRequired,
-      title:     PropTypes.string.isRequired,
-      body:      PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  noteId:        PropTypes.number.isRequired,
-  onUpdateBody:  PropTypes.func.isRequired,
-  onUpdateTitle: PropTypes.func.isRequired,
+  noteId:             PropTypes.number.isRequired,
+  onUpdateBody:       PropTypes.func.isRequired,
+  onUpdateTitle:      PropTypes.func.isRequired,
   onConnectToChannel: PropTypes.func.isRequired,
+  onNoteUpdate:       PropTypes.func.isRequired,
 };
 
 class Note extends Component {
@@ -36,7 +30,7 @@ class Note extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {socket, noteId, channel, onConnectToChannel, onLeaveChannel} = this.props;
+    const {currentNote, socket, noteId, channel, onConnectToChannel, onLeaveChannel, onNoteUpdate} = this.props;
 
     if (nextProps.noteId !== noteId) {
       onLeaveChannel(channel);
@@ -44,6 +38,10 @@ class Note extends Component {
     }
     if (!socket && nextProps.socket) {
       onConnectToChannel(nextProps.socket, nextProps.noteId);
+    }
+
+    if (channel && currentNote.id !== -1 && nextProps.currentNote.id !== -1 && (currentNote.title !== nextProps.currentNote.title || currentNote.body !== nextProps.currentNote.body)) {
+      onNoteUpdate(channel, nextProps.currentNote);
     }
   }
 
@@ -56,13 +54,11 @@ class Note extends Component {
   }
 
   render () {
-    const {notes, noteId, onUpdateBody, onUpdateTitle} = this.props;
+    const {noteId, onUpdateBody, onUpdateTitle} = this.props;
     let currentNote;
 
     if (noteId !== -1) {
-      let noteIndex = _.findIndex(notes, (note) => {return (note.id === noteId)});
-
-      currentNote = notes[noteIndex]
+      currentNote = this.props.currentNote;
     } else {
       currentNote = {title: 'No Note selected.', body: ''}
     }
@@ -79,6 +75,7 @@ class Note extends Component {
                   value={currentNote.title}
                   onChange={({ target: { value: newTitle } }) =>
                     onUpdateTitle(currentNote.id, newTitle)}
+                  disabled={noteId === -1 ? true : false}
                 />
               </h1>
             </Col>
@@ -93,6 +90,7 @@ class Note extends Component {
                   value={currentNote.body || ''}
                   onChange={({ target: { value: newBody } }) =>
                     onUpdateBody(currentNote.id, newBody)}
+                  disabled={noteId === -1 ? true : false}
                 />
               </p>
             </Col>
@@ -107,19 +105,20 @@ Note.PropTypes = Props;
 
 const mapStateToProps = function mapStateToProps(state) {
   return {
-    socket: state.SessionReducer.socket,
-    notes: state.NotesListReducer.notes,
-    noteId: state.NotesListReducer.noteId,
-    channel: state.NoteReducer.channel,
+    socket:      state.SessionReducer.socket,
+    noteId:      state.NotesListReducer.noteId,
+    channel:     state.NoteReducer.channel,
+    currentNote: state.NoteReducer.currentNote,
   };
 };
 
 const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return ({
-    onUpdateBody:       (id, body)   => {dispatch(updateBody(id, body))},
-    onUpdateTitle:      (id, title)  => {dispatch(updateTitle(id, title))},
-    onConnectToChannel: (socket, id) => {dispatch(connectToChannel(socket, id))},
-    onLeaveChannel:     (channel)    => {dispatch(leaveChannel(channel))},
+    onUpdateBody:       (id, body)      => {dispatch(updateBody(id, body))},
+    onUpdateTitle:      (id, title)     => {dispatch(updateTitle(id, title))},
+    onConnectToChannel: (socket, id)    => {dispatch(connectToChannel(socket, id))},
+    onLeaveChannel:     (channel)       => {dispatch(leaveChannel(channel))},
+    onNoteUpdate:       (channel, note) => {dispatch(updateNote(channel, note))},
   });
 }
 

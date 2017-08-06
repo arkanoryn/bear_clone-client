@@ -1,4 +1,4 @@
-import _                                                     from 'lodash';
+import _           from 'lodash';
 import {
   OVER_IN_NOTE,
   OVER_OUT_NOTE,
@@ -7,9 +7,8 @@ import {
   REQUEST_NOTES_FAILURE,
   RECEIVE_NOTES,
   SELECT_NOTE,
-}                                                            from './Types';
-import { GENERAL, UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE } from '../Note/Types';
-import NoteReducer                                           from '../Note/Reducer'
+}                  from './Types';
+import { GENERAL } from '../Note/Types';
 
 const latestAvailableId = function latestAvailableId(notes) {
   let lastNote = _.last(notes) || {id: 0};
@@ -22,13 +21,9 @@ const initialState = {
   isFetching: false,
   noteId: -1,
   notes: [],
-  status: GENERAL,
 };
 
 let NotesListReducer = (state = initialState, action) => {
-  let noteIndex = _.findIndex(state.notes, (x) => {return (x.id === action.id)});
-  let updatedNote;
-
   switch (action.type) {
     case OVER_IN_NOTE:
       return (Object.assign({}, state, {over: action.id}));
@@ -71,6 +66,13 @@ let NotesListReducer = (state = initialState, action) => {
         }
       ));
 
+    case 'NOTE_UPDATED':
+      return (Object.assign(
+        {},
+        state,
+        {...state, notes: state.notes.map((note) => note.id === action.note.note.id ? action.note.note : note)}
+      ));
+
     case REQUEST_NOTES:
       return (Object.assign({}, state, {isFetching: true}));
 
@@ -86,17 +88,6 @@ let NotesListReducer = (state = initialState, action) => {
 
     case SELECT_NOTE:
       return (Object.assign({}, state, {...state, noteId: action.id}));
-
-    case UPDATE_BODY:
-    case UPDATE_TITLE:
-    case UPDATE_STATUS:
-      updatedNote = NoteReducer(state.notes[noteIndex], action);
-
-      return (Object.assign(
-        {},
-        state,
-        {...state, notes: state.notes.map((note) => (note.id === action.id) ? updatedNote : note)}
-      ));
 
     default:
       return state;
