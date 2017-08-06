@@ -3,7 +3,7 @@ import '../App.css';
 import { Layout } from 'antd';
 import { Route } from 'react-router-dom';
 import RootMenu from '../RootMenu'
-import NotesList from '../NotesList'
+import SubMenu from '../SubMenu'
 import Note from '../Note'
 
 const rootMenuItems = [
@@ -18,8 +18,8 @@ const App = () => {
     <Layout>
       <RootMenu items={rootMenuItems} tags={tags} />
 
-      <Route path="/trash" component={NotesList} />
-      <Route exact path="/" component={NotesList} />
+      <Route path="/trash" component={SubMenu} />
+      <Route exact path="/" component={SubMenu} />
 
       <Layout style={{ marginLeft: 320 }}>
         <Note />

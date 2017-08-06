@@ -1,8 +1,15 @@
-import { OVER_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
+import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
 
-export const overNote = function overNote(id) {
+export const overInNote = function overInNote(id) {
   return ({
-    type: OVER_NOTE,
+    type: OVER_IN_NOTE,
+    id
+  });
+}
+
+export const overOutNote = function overOutNote(id) {
+  return ({
+    type: OVER_OUT_NOTE,
     id
   });
 }

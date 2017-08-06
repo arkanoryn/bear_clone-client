@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OVER_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
+import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, SELECT_NOTE } from './Types';
 import { GENERAL, UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE, TRASH } from '../Note/Types';
 import NoteReducer from '../Note/Reducer'
 
@@ -30,8 +30,18 @@ let NotesListReducer = (state = initialState, action) => {
   let updatedNote;
 
   switch (action.type) {
-    case OVER_NOTE:
+    case OVER_IN_NOTE:
       return (Object.assign({}, state, {over: action.id}));
+
+    case OVER_OUT_NOTE:
+      let overId;
+      if (action.id === state.over) {
+        overId = -1;
+      } else {
+        overId = action.id;
+      }
+
+      return (Object.assign({}, state, {over: overId}));
 
     case NEW_NOTE:
       let newNote = {
