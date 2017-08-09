@@ -1,22 +1,23 @@
-import './index.css';
 import React                            from 'react';
 import ReactDOM                         from 'react-dom';
-import thunkMiddleware from 'redux-thunk';
+import thunkMiddleware                  from 'redux-thunk';
 import { Provider }                     from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger }                 from 'redux-logger';
 import { BrowserRouter as Router }      from 'react-router-dom';
 import App                              from './App';
+import './index.css';
 import registerServiceWorker            from './registerServiceWorker';
 import NoteApp                          from './Reducers';
 import { fetchNotes }                   from './NotesList/Actions';
-import { connectToSocket } from './Session/Action';
-import { connectToLobby } from './Note/Actions';
+import { connectToSocket }              from './Session/Action';
+import { connectToLobby }               from './Note/Actions';
 
 const loggerMiddleware = createLogger();
 
-let store = createStore(NoteApp,
-                        applyMiddleware(thunkMiddleware, loggerMiddleware)
+const store = createStore(
+  NoteApp,
+  applyMiddleware(thunkMiddleware, loggerMiddleware),
 );
 
 store.dispatch(fetchNotes());
@@ -30,7 +31,7 @@ ReactDOM.render(
     </Router>
   </Provider>
   ,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 registerServiceWorker();

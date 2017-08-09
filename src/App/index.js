@@ -1,17 +1,17 @@
 import React from 'react';
-import '../App.css';
 import { Layout } from 'antd';
 import { Route } from 'react-router-dom';
-import RootMenu from '../RootMenu'
-import SubMenu from '../SubMenu'
-import Note from '../Note'
+import RootMenu from '../RootMenu';
+import SubMenu from '../SubMenu';
+import Note from '../Note';
+import '../App.css';
 
 const rootMenuItems = [
-  { id: 1, title: "General", icon: "apple", path: "/" },
-  { id: 2, title: "Trash", icon: "delete", path: "/trash" }
-]
+  { id: 1, title: 'General', icon: 'apple', path: '/' },
+  { id: 2, title: 'Trash', icon: 'delete', path: '/trash' },
+];
 
-const tags = ["#Learning", "#React", "#Elixir", "#Win"]
+const tags = ['#Learning', '#React', '#Elixir', '#Win'];
 
 const App = () => {
   return (
@@ -26,6 +26,6 @@ const App = () => {
       </Layout>
     </Layout>
   );
-}
+};
 
 export default App;

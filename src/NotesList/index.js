@@ -42,14 +42,14 @@ const NoteActionButton = function NoteActionButton({isTrash, action, noteId}) {
   }
 };
 
-const RenderNotesList = function RenderNotesList({notes,
-                                                  currentNoteId,
-                                                  isTrash,
-                                                  over,
-                                                  onMouseEnterNote,
-                                                  onMouseExitNote,
-                                                  onNoteClick,
-                                                  action,
+const RenderNotesList = function RenderNotesList({ notes,
+                                                   currentNoteId,
+                                                   isTrash,
+                                                   over,
+                                                   onMouseEnterNote,
+                                                   onMouseExitNote,
+                                                   onNoteClick,
+                                                   action,
 }) {
   let noteIndex = _.findIndex(notes, (x) => {return (x.id === currentNoteId)});
 
@@ -59,27 +59,29 @@ const RenderNotesList = function RenderNotesList({notes,
       mode="inline"
       defaultSelectedKeys={noteIndex !== -1 ? [noteIndex.toString()] : []}
     >
-    {
-      notes.map(note =>
-        <Menu.Item key={note.id} onMouseEnter={() => onMouseEnterNote(note.id)} onMouseLeave={() => onMouseExitNote(note.id)}>
-        <Col span={20} onClick={() => onNoteClick(note.id)}>
-        <span className="nav-text">
-        {note.title}
-              </span>
-          </Col>
+      {
+        notes.map((note) => {
+          return (
+            <Menu.Item key={note.id} onMouseEnter={() => { onMouseEnterNote(note.id); }} onMouseLeave={() => { onMouseExitNote(note.id); }}>
+              <Col span={20} onClick={() => { onNoteClick(note.id); }}>
+                <span className="nav-text">
+                  {note.title}
+                </span>
+              </Col>
 
-          <Col span={2} offset={1}>
-            { note.id === over ?
-              <NoteActionButton
-              isTrash={isTrash}
-              action={action}
-              noteId={note.id}
-              />
-                  : ""
-            }
-          </Col>
-        </Menu.Item>
-      )}
+              <Col span={2} offset={1}>
+                { note.id === over ?
+                  <NoteActionButton
+                    isTrash={isTrash}
+                    action={action}
+                    noteId={note.id}
+                  />
+                  : ''
+                }
+              </Col>
+            </Menu.Item>
+          ) },
+        )}
     </Menu>
   );
 };
@@ -95,8 +97,8 @@ const mapStateToProps = function mapStateToProps(state) {
 
 const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return ({
-    onMouseEnterNote: (id) => {dispatch(overInNote(id))},
-    onMouseExitNote:  (id) => {dispatch(overOutNote(id))},
+    onMouseEnterNote: (id) => { dispatch(overInNote(id)); },
+    onMouseExitNote:  (id) => { dispatch(overOutNote(id)); },
   });
 };
 
