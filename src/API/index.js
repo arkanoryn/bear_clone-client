@@ -1,6 +1,7 @@
+// @flow
 import fetch from 'isomorphic-fetch';
 
-const API_HOST = process.env.REACT_APP_API_HOST_URL;
+const API_HOST:string = process.env.REACT_APP_API_HOST_URL;
 
 function headers() {
   return {
@@ -28,7 +29,7 @@ function queryString(params) {
 }
 
 const API = {
-  fetch(url, params = {}) {
+  fetch(url:string, params:{} = {}) {
     return fetch(`${API_HOST}${url}${queryString(params)}`, {
       method:  'GET',
       headers: headers(),
