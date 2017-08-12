@@ -9,7 +9,6 @@ import App                              from './App';
 import './index.css';
 import registerServiceWorker            from './registerServiceWorker';
 import NoteApp                          from './Reducers';
-import { fetchNotes }                   from './NotesList/Actions';
 import { connectToSocket }              from './Session/Action';
 import { connectToLobby }               from './Note/Actions';
 
@@ -20,7 +19,6 @@ const store = createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware),
 );
 
-store.dispatch(fetchNotes());
 store.dispatch(connectToSocket());
 store.dispatch(connectToLobby(store.getState().SessionReducer.socket));
 

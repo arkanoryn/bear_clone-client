@@ -29,12 +29,22 @@ function queryString(params) {
 }
 
 const API = {
-  fetch(url:string, params:{} = {}) {
+  fetch(url, params = {}) {
     return fetch(`${API_HOST}${url}${queryString(params)}`, {
       method:  'GET',
       headers: headers(),
     })
       .then(parseResponse);
+  },
+  post(url, data) {
+    const body = JSON.stringify(data);
+
+    return fetch(`${API_HOST}${url}`, {
+      method: 'POST',
+      headers: headers(),
+      body,
+    })
+    .then(parseResponse);
   },
 };
 

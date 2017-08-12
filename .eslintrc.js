@@ -9,7 +9,6 @@ module.exports = {
     "react/jsx-filename-extension": 0,
     "camelcase": 0,
     "arrow-parens": [2, "always"],
-    "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
     "no-multi-spaces": ["error", { exceptions: { "ImportDeclaration": true, "VariableDeclarator": true } }],
     "max-len": [2,  { "code": 120 } ],
@@ -24,6 +23,8 @@ module.exports = {
     } ],
     "arrow-body-style": ["error", "always"],
     "key-spacing": [1, { "align": "value" } ],
+    "react/prop-types": 0,
+    "jsx-a11y/href-no-hash": 0,
   },
   "globals": {
     "fetch": true,

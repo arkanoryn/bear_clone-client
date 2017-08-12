@@ -47,16 +47,19 @@ export const newNote = function newNote() {
 };
 
 export const fetchNotes = () => {
-  return ((dispatch) => {
-    dispatch(requestNotes());
+  return (
+    (dispatch) => {
+      dispatch(requestNotes());
 
-    return (API
-      .fetch('/notes')
-      .then((response) => {
-        dispatch(receiveNotes(response));
-      })
-      .catch((e) => {
-        dispatch(requestNotesFailure(e));
-      }));
-  });
+      return (
+        API
+          .fetch('/notes')
+          .then((response) => {
+            dispatch(receiveNotes(response));
+          })
+          .catch(
+            (e) => {
+              dispatch(requestNotesFailure(e));
+            }));
+    });
 };

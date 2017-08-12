@@ -122,3 +122,11 @@ const mapDispatchToProps = function mapDispatchToProps(dispatch) {
 const Note = connect(mapStateToProps, mapDispatchToProps)(NoteClass);
 Note.PropTypes = Props;
 export default Note;
+
+export {
+  connectToChannel,
+  leaveChannel,
+  updateBody,
+  updateTitle,
+  updateNote,
+};

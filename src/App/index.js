@@ -1,9 +1,11 @@
-import React from 'react';
-import { Layout } from 'antd';
-import { Route } from 'react-router-dom';
-import RootMenu from '../RootMenu';
-import SubMenu from '../SubMenu';
-import Note from '../Note';
+import React       from 'react';
+import { connect } from 'react-redux';
+import { Layout }  from 'antd';
+import { Route }   from 'react-router-dom';
+import RootMenu    from '../RootMenu';
+import SubMenu     from '../SubMenu';
+import Note        from '../Note';
+import Login       from '../Login';
 import '../App.css';
 
 const rootMenuItems = [
@@ -13,7 +15,7 @@ const rootMenuItems = [
 
 const tags = ['#Learning', '#React', '#Elixir', '#Win'];
 
-const App = () => {
+const AuthApp = () => {
   return (
     <Layout>
       <RootMenu items={rootMenuItems} tags={tags} />
@@ -28,4 +30,25 @@ const App = () => {
   );
 };
 
+const UnAuthApp = () => {
+  return (
+    <Login />
+  );
+};
+
+const RenderApp = ({ isAuthenticated }) => {
+  if (isAuthenticated) {
+    return (<AuthApp />);
+  } else {
+    return (<UnAuthApp />);
+  }
+};
+
+const mapStateToProps = (state) => {
+  return ({
+    isAuthenticated: state.AuthReducer.isAuthenticated,
+  });
+};
+
+const App = connect(mapStateToProps)(RenderApp);
 export default App;
