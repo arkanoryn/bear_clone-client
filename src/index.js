@@ -8,9 +8,8 @@ import { BrowserRouter as Router }      from 'react-router-dom';
 import App                              from './App';
 import './index.css';
 import registerServiceWorker            from './registerServiceWorker';
-import NoteApp                          from './Reducers';
-import { connectToSocket }              from './Session/Action';
-import { connectToLobby }               from './Note/Actions';
+import NoteApp                          from './reducers';
+import {fetchNotes } from './modules/noteslist/actions.js'
 
 const loggerMiddleware = createLogger();
 
@@ -19,8 +18,9 @@ const store = createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware),
 );
 
-store.dispatch(connectToSocket());
-store.dispatch(connectToLobby(store.getState().SessionReducer.socket));
+store.dispatch(fetchNotes());
+/* store.dispatch(connectToSocket());*/
+/* store.dispatch(connectToLobby(store.getState().SessionReducer.socket));*/
 
 ReactDOM.render(
   <Provider store={store}>

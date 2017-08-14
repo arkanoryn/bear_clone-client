@@ -1,5 +1,13 @@
-import { OVER_IN_NOTE, OVER_OUT_NOTE, NEW_NOTE, RECEIVE_NOTES, REQUEST_NOTES, REQUEST_NOTES_FAILURE, SELECT_NOTE } from './Types';
-import API from '../API';
+import {
+  OVER_IN_NOTE,
+  OVER_OUT_NOTE,
+  NEW_NOTE,
+  RECEIVE_NOTES,
+  REQUEST_NOTES,
+  REQUEST_NOTES_FAILURE,
+  SELECT_NOTE,
+}          from './types';
+import API from '../../API';
 
 export const overInNote = function overInNote(id) {
   return ({

@@ -1,4 +1,4 @@
-import { UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE } from './Types';
+import { UPDATE_BODY, UPDATE_STATUS, UPDATE_TITLE } from './types';
 
 export const connectToLobby = function connectToLobby(socket) {
   return (dispatch) => {

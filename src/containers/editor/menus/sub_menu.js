@@ -1,30 +1,35 @@
 import React, { Component }                    from 'react';
-import PropTypes                               from 'prop-types';
 import { connect }                             from 'react-redux';
 import { Layout, Spin, message, notification } from 'antd';
+import { Button, Col, Input, Row } from 'antd';
 import _                                       from 'lodash';
-import { selectNote, newNote }                 from '../NotesList/Actions';
-import { updateStatus }                        from '../Note/Actions';
-import { GENERAL, TRASH }                      from '../Note/Types';
-import NotesList                               from '../NotesList';
-import Header                                  from './Header';
+import {
+  overInNote,
+  overOutNote,
+  newNote,
+  selectNote,
+}                 from '../../../modules/noteslist/actions';
+import { updateStatus }                        from '../../../modules/note/actions';
+import { GENERAL, TRASH }                      from '../../../modules/note/types';
+import NotesList                               from '../../../modules/noteslist/note_menu';
 
 const { Sider }  = Layout;
+const { Search } = Input;
 
-const Props = {
-  allNotes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  isFetching: PropTypes.bool.isRequired,
+const Header = function Header({onNewNoteClick}) {
+  return (
+    <div style={{ padding: 16 }}>
+      <Row>
+        <Col span={20}>
+          <Search placeholder="Search" onSearch={value => console.log(value)} disabled />
+        </Col>
 
-  onNoteClick:        PropTypes.func.isRequired,
-  onNewNoteClick:     PropTypes.func.isRequired,
-  onTrashNoteClick:   PropTypes.func.isRequired,
-  onPutBackNoteClick: PropTypes.func.isRequired,
+        <Col span={2} offset={1}>
+          <Button type="primary" shape="circle" icon="plus" onClick={onNewNoteClick} />
+        </Col>
+      </Row>
+    </div>
+  );
 };
 
 class SubMenu extends Component {
@@ -60,13 +65,20 @@ class SubMenu extends Component {
   }
 
   render () {
-    const {match,
-           allNotes,
-           isFetching,
-           onNoteClick,
-           onNewNoteClick,
-           onTrashNoteClick,
-           onPutBackNoteClick} = this.props;
+    const {
+      allNotes,
+      currentNoteId,
+      over,
+      match,
+      isFetching,
+      onMouseEnterNote,
+      onMouseExitNote,
+      onNewNoteClick,
+      onNoteClick,
+      onTrashNoteClick,
+      onPutBackNoteClick
+    } = this.props;
+    console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${match.path}`)
     const isTrash   = match.path === '/trash';
     let notes;
     let action;
@@ -84,29 +96,40 @@ class SubMenu extends Component {
         <Header onNewNoteClick={onNewNoteClick} />
 
         <Spin spinning={isFetching} delay={2000} style={{ marginTop: '30px' }}>
-          <NotesList notes={notes} isTrash={isTrash} onNoteClick={onNoteClick} action={action} />
+          <NotesList
+            notes={notes}
+            currentNoteId={currentNoteId}
+            over={over}
+            isTrash={isTrash}
+            onMouseEnterNote={onMouseEnterNote}
+            onMouseExitNote={onMouseExitNote}
+            onNoteClick={onNoteClick}
+            action={action}
+          />
         </Spin>
       </Sider>
     );
   }
 }
 
-SubMenu.propTypes = Props;
-
 const mapStateToProps = function mapStateToProps(state) {
   return ({
     errors:     state.NotesListReducer.errors,
     allNotes:   state.NotesListReducer.notes,
     isFetching: state.NotesListReducer.isFetching,
+    currentNoteId: state.NotesListReducer.noteId,
+    over:          state.NotesListReducer.over,
   });
 };
 
 const mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return ({
-    onNewNoteClick:     ()   => {dispatch(newNote())},
-    onNoteClick:        (id) => {dispatch(selectNote(Number(id)))},
-    onTrashNoteClick:   (id) => {dispatch(updateStatus(id, TRASH))},
-    onPutBackNoteClick: (id) => {dispatch(updateStatus(id, GENERAL))},
+    onNewNoteClick:     ()   => { dispatch(newNote()); },
+    onNoteClick:        (id) => { dispatch(selectNote(Number(id))); },
+    onTrashNoteClick:   (id) => { dispatch(updateStatus(id, TRASH)); },
+    onPutBackNoteClick: (id) => { dispatch(updateStatus(id, GENERAL)); },
+    onMouseEnterNote:   (id) => { dispatch(overInNote(id)); },
+    onMouseExitNote:    (id) => { dispatch(overOutNote(id)); },
   });
 };
 
