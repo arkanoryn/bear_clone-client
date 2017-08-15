@@ -12,45 +12,30 @@ import {
 const API_URL       = process.env.REACT_APP_API_HOST_URL;
 const WEBSOCKET_URL = API_URL.replace(/(https|http)/, 'ws').replace('/api', '');
 
-const logInUser = (dispatch, response) => {
-  localStorage.setItem('token', JSON.stringify(response.meta.token));
-  dispatch(authUserSuccess(response));
-  dispatch(fetchNotes());
-  dispatch(connectToSocket());
-};
-
-
 export const connectToSocket = () => {
-  return function(dispatch) {
+  return ((dispatch) => {
     const socket = new Socket(`${WEBSOCKET_URL}/socket`, {});
     socket.connect();
 
     dispatch(connectToLobby(socket));
     return (dispatch({
       type: SOCKET_CONNECTED,
-      socket: socket,
+      socket,
     }));
-  }
-}
-
-const generateAuthentication = (username, password) => {
-  return ({
-    username: username,
-    password: password,
   });
 };
 
 export const authUserRequest = () => {
   return ({
-    type: AUTH_USER_REQUEST
+    type: AUTH_USER_REQUEST,
   });
 };
 
 export const authUserSuccess = (json) => {
   return ({
-    type: AUTH_USER_SUCCESS,
+    type:  AUTH_USER_SUCCESS,
     token: json.meta.token,
-    user: json.data,
+    user:  json.data,
   });
 };
 
@@ -61,6 +46,14 @@ export const authUserFailure = (errors) => {
   });
 };
 
+const logInUser = (dispatch, response) => {
+  localStorage.setItem('token', JSON.stringify(response.meta.token));
+  dispatch(authUserSuccess(response));
+  dispatch(fetchNotes());
+  dispatch(connectToSocket());
+};
+
+
 export const authUser = (username, password) => {
   return (
     (dispatch) => {
@@ -68,9 +61,9 @@ export const authUser = (username, password) => {
 
       return (
         API
-        .post('/sessions', generateAuthentication(username, password))
-        .then((response) => { logInUser(dispatch, response); })
-        .catch((errors)  => { dispatch(authUserFailure(errors)); })
+          .post('/sessions', { username, password })
+          .then((response) => { logInUser(dispatch, response); })
+          .catch((errors) => { dispatch(authUserFailure(errors)); })
       );
     });
 };
@@ -79,10 +72,11 @@ export function authenticate() {
   return (dispatch) => {
     dispatch({ type: AUTH_USER_REQUEST });
 
-    return(
+    return (
       API
         .post('/sessions/refresh')
         .then((response) => { logInUser(dispatch, response); })
-        .catch(()        => { localStorage.removeItem('token'); })
-    )};
+        .catch(() => { localStorage.removeItem('token'); })
+    );
+  };
 }

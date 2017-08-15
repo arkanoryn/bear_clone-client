@@ -2,9 +2,9 @@ import { GENERAL, UPDATE_BODY, UPDATE_TITLE, UPDATE_STATUS } from './types';
 
 const initialState = {
   currentNote: {
-    id: -1,
-    title: '',
-    body: '',
+    id:     -1,
+    title:  '',
+    body:   '',
     status: GENERAL,
   },
   channel: null,
@@ -43,7 +43,7 @@ const NoteReducer = function NoteReducer(state = initialState, action) {
     case 'NOTE_CONNECTED_TO_CHANNEL':
       return {
         ...state,
-        channel: action.channel,
+        channel:     action.channel,
         currentNote: action.response.note,
       };
 

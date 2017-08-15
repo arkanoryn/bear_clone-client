@@ -6,25 +6,26 @@ import {
 }            from 'antd';
 import _     from 'lodash';
 
-const NoteActionButton = ({isTrash, action, noteId}) => {
+const NoteActionButton = ({ isTrash, action, noteId }) => {
   if (isTrash) {
     return (
       <Button
         type="primary"
         size="small"
         icon="file-add"
-        onClick={() => action(noteId)}
+        onClick={() => { action(noteId); }}
       />
-    );} else {
-      return (
-        <Button
-          type="danger"
-          size="small"
-          icon="delete"
-          onClick={() => action(noteId)}
-        />
-      );
-    }
+    );
+  }
+
+  return (
+    <Button
+      type="danger"
+      size="small"
+      icon="delete"
+      onClick={() => { action(noteId); }}
+    />
+  );
 };
 
 const NotesList = ({
@@ -37,7 +38,7 @@ const NotesList = ({
   onNoteClick,
   action,
 }) => {
-  let noteIndex = _.findIndex(notes, (x) => {return (x.id === currentNoteId)});
+  const noteIndex = _.findIndex(notes, (x) => { return (x.id === currentNoteId); });
 
   return (
     <Menu
@@ -52,7 +53,7 @@ const NotesList = ({
               key={note.id}
               onMouseEnter={() => { onMouseEnterNote(note.id); }}
               onMouseLeave={() => { onMouseExitNote(note.id); }}
-              >
+            >
               <Col span={20} onClick={() => { onNoteClick(note.id); }}>
                 <span className="nav-text">
                   {note.title}
@@ -70,7 +71,8 @@ const NotesList = ({
                 }
               </Col>
             </Menu.Item>
-          ) },
+          );
+        },
         )}
     </Menu>
   );

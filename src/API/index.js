@@ -9,7 +9,7 @@ function headers() {
   return {
     Accept:         'application/json',
     'Content-Type': 'application/json',
-    Authorization: `Bearer: ${token}`,
+    Authorization:  `Bearer: ${token}`,
   };
 }
 
@@ -43,11 +43,11 @@ const API = {
     const body = JSON.stringify(data);
 
     return fetch(`${API_HOST}${url}`, {
-      method: 'POST',
+      method:  'POST',
       headers: headers(),
       body,
     })
-    .then(parseResponse);
+      .then(parseResponse);
   },
 };
 

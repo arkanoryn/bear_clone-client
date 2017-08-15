@@ -38,7 +38,7 @@ export const requestNotesFailure = (errors) => {
 
 export const receiveNotes = (json) => {
   return {
-    type: RECEIVE_NOTES,
+    type:  RECEIVE_NOTES,
     notes: json.data,
   };
 };

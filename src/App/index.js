@@ -5,7 +5,7 @@ import Login                from '../containers/login';
 import { authenticate }     from '../modules/authentication/actions';
 import '../App.css';
 
-class App extends Component {
+class AppClass extends Component {
   componentDidMount() {
     const { onAuthenticate } = this.props;
     const token = localStorage.getItem('token');
@@ -22,9 +22,8 @@ class App extends Component {
       return (
         <Editor />
       );
-    } else {
-      return (<Login />);
     }
+    return (<Login />);
   }
 }
 
@@ -36,10 +35,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    onAuthenticate: () => {dispatch(authenticate())},
+    onAuthenticate: () => { dispatch(authenticate()); },
   });
 };
 
 
-App = connect(mapStateToProps, mapDispatchToProps, null, { pure:false })(App);
+const App = connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(AppClass);
 export default App;

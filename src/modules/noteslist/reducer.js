@@ -11,14 +11,23 @@ import {
 import { GENERAL } from '../note/types';
 
 const initialState = {
-  errors: [],
-  isFetching: false,
-  noteId: -1,
-  notes: [],
+  errors:       [],
+  isFetching:   false,
+  noteId:       -1,
+  notes:        [],
   lobbyChannel: null,
 };
 
-let NotesListReducer = (state = initialState, action) => {
+const NotesListReducer = (state = initialState, action) => {
+  let overId;
+  const newNote = {
+    id:     -1,
+    title:  '',
+    body:   '',
+    status: GENERAL,
+  };
+
+
   switch (action.type) {
     case OVER_IN_NOTE:
       return ({
@@ -27,7 +36,6 @@ let NotesListReducer = (state = initialState, action) => {
       });
 
     case OVER_OUT_NOTE:
-      let overId;
       if (action.id === state.over) {
         overId = -1;
       } else {
@@ -40,32 +48,25 @@ let NotesListReducer = (state = initialState, action) => {
       });
 
     case NEW_NOTE:
-      let newNote = {
-        id: -1,
-        title: '',
-        body: '',
-        status: GENERAL,
-      };
-
       return ({
         ...state,
-        notes: [...state.notes, newNote],
+        notes:  [...state.notes, newNote],
         noteId: newNote.id,
       });
 
     case REQUEST_NOTES_FAILURE:
-        return ({
-          ...state,
-          isFetching: false,
-          notes: [],
-          errors: action.errors,
-        });
+      return ({
+        ...state,
+        isFetching: false,
+        notes:      [],
+        errors:     action.errors,
+      });
 
     case 'NOTES_LIST_UPDATED':
     case 'NOTE_UPDATED':
       return ({
         ...state,
-        notes: state.notes.map((note) => note.id === action.note.note.id ? action.note.note : note),
+        notes: state.notes.map((note) => { return (note.id === action.note.note.id ? action.note.note : note); }),
       });
 
     case 'CONNECTED_TO_LOBBY':
@@ -84,8 +85,8 @@ let NotesListReducer = (state = initialState, action) => {
       return ({
         ...state,
         isFetching: false,
-        notes: _.sortBy(action.notes, ['id']),
-        });
+        notes:      _.sortBy(action.notes, ['id']),
+      });
 
     case SELECT_NOTE:
       return ({

@@ -6,21 +6,18 @@ import SubMenu    from './menus/sub_menu';
 import Note       from '../../modules/note/note';
 
 const rootMenuItems = [
-  { id: 1, title: "General", icon: "apple", path: "/" },
-  { id: 2, title: "Trash", icon: "delete", path: "/trash" },
-]
+  { id: 1, title: 'General', icon: 'apple', path: '/' },
+  { id: 2, title: 'Trash', icon: 'delete', path: '/trash' },
+];
 
-const tags = ["#Learning", "#React", "#Elixir", "#Win"]
+const tags = ['#Learning', '#React', '#Elixir', '#Win'];
 
 const Editor = () => {
   return (
     <Layout>
       <RootMenu items={rootMenuItems} tags={tags} />
-
       <Route path="/trash" component={SubMenu} />
       <Route exact path="/" component={SubMenu} />
-
-
 
       <Layout style={{ marginLeft: 320 }}>
         {/* <Note /> */}

@@ -40,7 +40,10 @@ class NoteClass extends Component {
       onConnectToChannel(nextProps.socket, nextProps.noteId);
     }
 
-    if (channel && currentNote.id !== -1 && nextProps.currentNote.id !== -1 && (currentNote.title !== nextProps.currentNote.title || currentNote.body !== nextProps.currentNote.body)) {
+    if (channel &&
+        currentNote.id !== -1 &&
+        nextProps.currentNote.id !== -1 &&
+        (currentNote.title !== nextProps.currentNote.title || currentNote.body !== nextProps.currentNote.body)) {
       onNoteUpdate(channel, nextProps.currentNote);
     }
   }

@@ -2,7 +2,7 @@ import {
   AUTH_USER_REQUEST,
   AUTH_USER_SUCCESS,
   AUTH_USER_FAILURE,
-  SOCKET_CONNECTED
+  SOCKET_CONNECTED,
 } from './types';
 
 const initialUser = {
@@ -32,9 +32,9 @@ const AuthenticationReducer = (state = initialState, action) => {
         willAuthenticate: false,
         isAuthenticated:  true,
         currentUser:      {
-          id: action.user.id,
+          id:       action.user.id,
           username: action.user.username,
-          token: action.token,
+          token:    action.token,
         },
       });
 
