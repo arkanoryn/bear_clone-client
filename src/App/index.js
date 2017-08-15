@@ -1,34 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Editor from '../containers/editor';
+import Login from '../containers/login';
 import '../App.css';
-
-const UnAuthApp = () => {
-  return (
-    <div>
-      Unauth
-    </div>
-  );
-};
-
 
 class App extends Component {
   render() {
     const { isAuthenticated } = this.props;
 
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
       return (
         <Editor />
       );
     } else {
-      return (<UnAuthApp />);
+      return (<Login />);
     }
   }
 }
 
 const mapStateToProps = (state) => {
   return ({
-    isAuthenticated: false, //state.AuthReducer.isAuthenticated,
+    isAuthenticated: state.AuthenticationReducer.isAuthenticated,
   });
 };
 

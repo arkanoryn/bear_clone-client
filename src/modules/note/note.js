@@ -8,7 +8,7 @@ import {
   updateBody,
   updateTitle,
   updateNote,
-} from './Actions';
+} from './actions';
 
 const { Content }  = Layout;
 const { TextArea } = Input;

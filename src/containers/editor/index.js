@@ -3,6 +3,7 @@ import { Route }  from 'react-router-dom';
 import { Layout } from 'antd';
 import RootMenu   from './menus/root_menu';
 import SubMenu    from './menus/sub_menu';
+import Note from '../../modules/note/note';
 
 const rootMenuItems = [
   { id: 1, title: "General", icon: "apple", path: "/" },
@@ -22,12 +23,7 @@ const Editor = () => {
 
 
       <Layout style={{ marginLeft: 320 }}>
-      <Route path="/trash" render={() => <div>
-        trash
-      </div>} />
-      <Route exact path="/" render={() => <div>
-        root
-      </div>} />
+        {/* <Note /> */}
       </Layout>
     </Layout>
   );

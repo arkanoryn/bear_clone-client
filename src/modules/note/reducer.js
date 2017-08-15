@@ -1,4 +1,4 @@
-import { GENERAL, UPDATE_BODY, UPDATE_TITLE, UPDATE_STATUS } from './Types';
+import { GENERAL, UPDATE_BODY, UPDATE_TITLE, UPDATE_STATUS } from './types';
 
 const initialState = {
   currentNote: {
@@ -39,7 +39,6 @@ const NoteReducer = function NoteReducer(state = initialState, action) {
         state,
         { ...state, currentNote: action.note.note },
       ));
-
 
     case 'NOTE_CONNECTED_TO_CHANNEL':
       return {
