@@ -1,21 +1,31 @@
-import { Socket }     from 'phoenix';
-import API            from '../../API';
-import { fetchNotes } from '../noteslist/actions';
+import { Socket }         from 'phoenix';
+import API                from '../../API';
+import { fetchNotes }     from '../noteslist/actions';
+import { connectToLobby } from '../note/actions';
 import {
   SOCKET_CONNECTED,
   AUTH_USER_REQUEST,
   AUTH_USER_SUCCESS,
   AUTH_USER_FAILURE,
-}                     from './types';
+}                         from './types';
 
 const API_URL       = process.env.REACT_APP_API_HOST_URL;
 const WEBSOCKET_URL = API_URL.replace(/(https|http)/, 'ws').replace('/api', '');
+
+const logInUser = (dispatch, response) => {
+  localStorage.setItem('token', JSON.stringify(response.meta.token));
+  dispatch(authUserSuccess(response));
+  dispatch(fetchNotes());
+  dispatch(connectToSocket());
+};
+
 
 export const connectToSocket = () => {
   return function(dispatch) {
     const socket = new Socket(`${WEBSOCKET_URL}/socket`, {});
     socket.connect();
 
+    dispatch(connectToLobby(socket));
     return (dispatch({
       type: SOCKET_CONNECTED,
       socket: socket,
@@ -54,17 +64,25 @@ export const authUserFailure = (errors) => {
 export const authUser = (username, password) => {
   return (
     (dispatch) => {
-      console.log('auth user.');
       dispatch(authUserRequest());
 
       return (
         API
         .post('/sessions', generateAuthentication(username, password))
-        .then((response) => {
-          dispatch(authUserSuccess(response));
-          dispatch(fetchNotes());
-        })
+        .then((response) => { logInUser(dispatch, response); })
         .catch((errors)  => { dispatch(authUserFailure(errors)); })
       );
     });
 };
+
+export function authenticate() {
+  return (dispatch) => {
+    dispatch({ type: AUTH_USER_REQUEST });
+
+    return(
+      API
+        .post('/sessions/refresh')
+        .then((response) => { logInUser(dispatch, response); })
+        .catch(()        => { localStorage.removeItem('token'); })
+    )};
+}

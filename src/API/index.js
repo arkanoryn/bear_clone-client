@@ -4,9 +4,12 @@ import fetch from 'isomorphic-fetch';
 const API_HOST:string = process.env.REACT_APP_API_HOST_URL;
 
 function headers() {
+  const token = JSON.parse(localStorage.getItem('token'));
+
   return {
     Accept:         'application/json',
     'Content-Type': 'application/json',
+    Authorization: `Bearer: ${token}`,
   };
 }
 

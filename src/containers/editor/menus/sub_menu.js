@@ -78,7 +78,6 @@ class SubMenu extends Component {
       onTrashNoteClick,
       onPutBackNoteClick
     } = this.props;
-    console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${match.path}`)
     const isTrash   = match.path === '/trash';
     let notes;
     let action;

@@ -3,7 +3,7 @@ import { Route }  from 'react-router-dom';
 import { Layout } from 'antd';
 import RootMenu   from './menus/root_menu';
 import SubMenu    from './menus/sub_menu';
-import Note from '../../modules/note/note';
+import Note       from '../../modules/note/note';
 
 const rootMenuItems = [
   { id: 1, title: "General", icon: "apple", path: "/" },

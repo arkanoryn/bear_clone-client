@@ -18,10 +18,6 @@ const store = createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware),
 );
 
-store.dispatch(fetchNotes());
-/* store.dispatch(connectToSocket());*/
-/* store.dispatch(connectToLobby(store.getState().SessionReducer.socket));*/
-
 ReactDOM.render(
   <Provider store={store}>
     <Router>
