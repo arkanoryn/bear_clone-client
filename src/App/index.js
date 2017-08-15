@@ -1,32 +1,30 @@
-import React       from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Editor from '../containers/editor';
 import '../App.css';
-import { Route }  from 'react-router-dom';
-import SubMenu    from '../containers/editor/menus/sub_menu';
 
 const UnAuthApp = () => {
   return (
-    {/* <Login /> */}
+    <div>
+      Unauth
+    </div>
   );
 };
 
-const RenderApp = ({ isAuthenticated }) => {
-  if (!isAuthenticated) {
-    return (
-      <div>
 
+class App extends Component {
+  render() {
+    const { isAuthenticated } = this.props;
 
-      <Route path="/trash" component={SubMenu} />
-      <Route exact path="/" component={SubMenu} />
-
-      <Editor />
-      </div>
-    );
-  } else {
-    return (<UnAuthApp />);
+    if (!isAuthenticated) {
+      return (
+        <Editor />
+      );
+    } else {
+      return (<UnAuthApp />);
+    }
   }
-};
+}
 
 const mapStateToProps = (state) => {
   return ({
@@ -34,5 +32,5 @@ const mapStateToProps = (state) => {
   });
 };
 
-const App = connect(mapStateToProps)(RenderApp);
+App = connect(mapStateToProps, null, null, { pure:false })(App);
 export default App;

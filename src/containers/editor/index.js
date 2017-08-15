@@ -20,7 +20,14 @@ const Editor = () => {
       <Route exact path="/" component={SubMenu} />
 
 
+
       <Layout style={{ marginLeft: 320 }}>
+      <Route path="/trash" render={() => <div>
+        trash
+      </div>} />
+      <Route exact path="/" render={() => <div>
+        root
+      </div>} />
       </Layout>
     </Layout>
   );

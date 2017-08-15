@@ -40,5 +40,4 @@ const RootMenu = function RootMenu({items, tags}) {
   );
 }
 
-
 export default RootMenu;
